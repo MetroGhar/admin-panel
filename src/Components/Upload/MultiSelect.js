@@ -11,7 +11,7 @@ export function MultiSelect({ multiple, value, onChange, options }) {
 
   function selectOption(option) {
    
-    if (multiple) {
+    if (multiple ) {
       if (value?.includes(option)) {
         onChange(value?.filter(o => o !== option))
       } else {
@@ -88,7 +88,7 @@ export function MultiSelect({ multiple, value, onChange, options }) {
                 <span className={["remove-btn"]}>&times;</span>
               </button>
             ))
-          : ""}
+          : value}
       </span>
       <button
         onClick={e => {

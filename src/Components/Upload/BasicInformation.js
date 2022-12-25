@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Select from 'react-select';
 import {
   optionList,
   optionListTag,
@@ -28,7 +29,7 @@ const BasicInformation = ({ setData, data }) => {
       setTags(data?.tag);
     }, 200);
   }, [data]);
-
+console.log(config);
   useEffect(() => {
     setData((prevState) => ({
       ...prevState,
@@ -40,6 +41,7 @@ const BasicInformation = ({ setData, data }) => {
 
   const projectconfiguration = selectedOptions?.map((select) => select.value);
   const projectconTag = selectedOptionsTag?.map((select) => select.value);
+  console.log(projectconfiguration);
 
   const handleChange = (e) =>
     setData((prevState) => ({
@@ -47,6 +49,7 @@ const BasicInformation = ({ setData, data }) => {
       [e.target.name]: e.target.value,
       projectconfiguration: config,
       projectsubtype: projectsubtype,
+      projectconfiguration,
       projecttype,
       tag: projectconTag,
     }));
@@ -316,25 +319,28 @@ const BasicInformation = ({ setData, data }) => {
           <h2 className="">Property Overview</h2>
 
           <div className="mt-8 flex justify-between gap-x-14">
-            {/* <Select
-              className="w-full text-slate-400  border-slate-300  pr-3 focus:outline-none focus:border-gray-500 focus:ring-0 z-40 "
-              defaultValue={{label: data?.projectconfiguration?.map(itm => {return itm}), value: data?.projectconfiguration?.map(itm => {return itm})}}
-            
-              options={optionList}
-              placeholder="Configuration"
-             
-              onChange={handleSelect}
-              name="projectconfiguration"
-              isSearchable={true}
-              isMulti
-            /> */}
-            <MultiSelect
+          
+         
+            {
+              data?._id ? <MultiSelect
               multiple
               options={opt}
               value={config}
               name="projectconfiguration"
               onChange={(o) => setConfig(o)}
-            />
+            /> :    <Select
+            className="w-full text-slate-400  border-slate-300  pr-3 focus:outline-none focus:border-gray-500 focus:ring-0 z-40 "
+           
+            options={optionList}
+            placeholder="Configuration"
+            onChange={handleSelect}
+            name="projectconfiguration"
+            value={selectedOptions || data?.projectconfiguration}
+            isSearchable={true}
+            isMulti
+          />
+            }
+            
             <input
               type="text"
               placeholder="Project Size"
@@ -472,25 +478,28 @@ const BasicInformation = ({ setData, data }) => {
               defaultValue={data?.projectreranumber || ""}
               onChange={handleChange}
             />
-
-            <MultiSelect
+            {
+              data?._id ?  <MultiSelect
               multiple
               options={opt1}
               value={tags}
               name="tag"
               onChange={(o) => setTags(o)}
-            />
+            /> : <Select
+            className="w-full text-slate-400  border-slate-300  pr-3 focus:outline-none focus:border-gray-500 focus:ring-0 z-40 "
+            options={optionListTag}
+            placeholder="Tag"
+            value={selectedOptionsTag || data?.tag}
+            onChange={handleSelectTag}
+            name="tag"
+            isSearchable={true}
+            isMulti
+          />
+            }
 
-            {/* <Select
-              className="w-full text-slate-400  border-slate-300  pr-3 focus:outline-none focus:border-gray-500 focus:ring-0 z-40 "
-              options={optionListTag}
-              placeholder="Tag"
-              value={selectedOptionsTag || data?.tag}
-              onChange={handleSelectTag}
-              name="tag"
-              isSearchable={true}
-              isMulti
-            /> */}
+           
+
+            
             {/* <select
               name="tag"
               onChange={handleChange}

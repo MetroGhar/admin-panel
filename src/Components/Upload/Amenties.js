@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import MyMapComponent from "../MyMapComponent/MyMapComponent";
 
 import { amenties } from "./DataList";
-import { MultiSelect } from "./MultiSelect";
+import { MultiSelectAmen } from "./MultiSelectAmen";
+import Select from 'react-select';
 
 // https://i.postimg.cc/2yK0HQDP/Group-2395.png
 // https://i.postimg.cc/1zGY9VGq/Group-47440.png
@@ -17,7 +18,7 @@ const Amenties = ({ setData, data }) => {
   const [longi, setLongi] = useState();
   const [selectedOptions, setSelectedOptions] = useState([]);
   const projectamenities = selectedOptions?.map((select) => select.value);
-
+console.log(data);
   const handleChange = (e) => {
     setData((prevState) => ({
       ...prevState,
@@ -42,12 +43,14 @@ const Amenties = ({ setData, data }) => {
     e.preventDefault();
   };
 
-  let amen = amenties?.map((op) => op?.value?.split("name:")?.[1]);
-  let amenit = data?.projectamenities?.map(pr => pr?.split("name:")?.[1]);
+  // let amen = amenties?.map((op) => op?.value?.split("name:")?.[1]);
+  let amen = amenties?.map((op) => op?.value);
+  // let amenit = data?.projectamenities?.map(pr => pr?.split("name:")?.[1]);
+  let amenit = data?.projectamenities?.map(pr => pr);
 
   const [amens, setAmen] = useState(amenit);
 
-  console.log(data?.projectamenities?.map(pr => pr?.split("name:")?.[1]));
+  // console.log(data?.projectamenities?.map(pr => pr?.split("name:")?.[1]));
   // useEffect(() => {
   //   setTimeout(() => {
   //     setAmen(data?.data?.projectamenities?.map(pr => pr?.split("name:")?.[1]));
@@ -63,7 +66,16 @@ const Amenties = ({ setData, data }) => {
 
   return (
     <form onSubmit={handleAmenties} className="px-12 mt-16 pb-12">
-      {/* <Select
+     
+      {
+        data?._id ?  <MultiSelectAmen
+        multiple
+        options={amen}
+        value={amens}
+        name="projectamenities"
+        onChange={(o) => setAmen(o)}
+      />
+ : <Select
         className="w-full text-slate-400  border-slate-300  pr-3 focus:outline-none focus:border-gray-500 focus:ring-0 z-40 "
         name="projectamenities"
         options={amenties}
@@ -72,16 +84,10 @@ const Amenties = ({ setData, data }) => {
         onChange={handleSelect}
         isSearchable={true}
         isMulti
-      /> */}
-
-      <MultiSelect
-        multiple
-        options={amen}
-        value={amens}
-        name="projectamenities"
-        onChange={(o) => setAmen(o)}
       />
+      }
 
+     
       <h2 className="mt-16 text-[#4B4B4B] text-lg">Location Advantages</h2>
 
       <MyMapComponent
