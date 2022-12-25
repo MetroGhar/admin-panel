@@ -152,7 +152,7 @@ const BuldierProfile = ({ data, handleSubmit, setData }) => {
           className=" placeholder:text-slate-400 block w-full border-b-2 border-slate-300 py-2 pr-3 focus:outline-none focus:border-gray-500 focus:ring-0 sm:text-sm mt-8"
           type="text"
           name="builderdescription"
-          defaultValue={data?.aboutproject || ""}
+          defaultValue={data?.builderdescription || ""}
           placeholder="Descriptions"
           onChange={handleChange}
         />

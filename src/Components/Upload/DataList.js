@@ -1,7 +1,7 @@
 export const propertySub = [
   {
     id: 1,
-    value: "Apartment",
+    value: "Appartment",
     check: false,
   },
   {
