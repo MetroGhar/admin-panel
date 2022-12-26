@@ -18,6 +18,25 @@ const Amenties = ({ setData, data }) => {
   const [longi, setLongi] = useState();
   const [selectedOptions, setSelectedOptions] = useState([]);
   const projectamenities = selectedOptions?.map((select) => select.value);
+    // let amen = amenties?.map((op) => op?.value?.split("name:")?.[1]);
+    let amen = amenties?.map((op) => op?.value);
+    // let amenit = data?.projectamenities?.map(pr => pr?.split("name:")?.[1]);
+    let amenit = data?.projectamenities?.map(pr => pr);
+  
+    const [amens, setAmen] = useState(amenit);
+    useEffect(() => {
+     if(data?.projectamenities?.length > 1)
+        setAmen(amenit)
+    }, [data])
+
+    useEffect(() => {
+      if (data?.projectconfiguration?.length > 1) {
+        setData((prevState) => ({
+          ...prevState,
+          projectconfiguration:amens
+        }));
+      }
+    }, [amens]);
 console.log(data);
   const handleChange = (e) => {
     setData((prevState) => ({
@@ -28,7 +47,7 @@ console.log(data);
   useEffect(() => {
     setData((prevState) => ({
       ...prevState,
-      projectamenities: projectamenities,
+      projectamenities: amens,
       projectlatitude: lati,
       projectlongitude: longi,
     }));
@@ -42,16 +61,7 @@ console.log(data);
     e.preventDefault();
   };
 
-  // let amen = amenties?.map((op) => op?.value?.split("name:")?.[1]);
-  let amen = amenties?.map((op) => op?.value);
-  // let amenit = data?.projectamenities?.map(pr => pr?.split("name:")?.[1]);
-  let amenit = data?.projectamenities?.map(pr => pr);
 
-  const [amens, setAmen] = useState(amenit);
-  useEffect(() => {
-   if(data?.projectamenities?.length > 1)
-      setAmen(amenit)
-  }, [])
 
   // console.log(data?.projectamenities?.map(pr => pr?.split("name:")?.[1]));
   // useEffect(() => {
