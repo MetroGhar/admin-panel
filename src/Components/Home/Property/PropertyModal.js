@@ -72,11 +72,17 @@ const PropertyModal = ({ saveData }) => {
 
   const [allDatas, setAllDatas] = useState([]);
  
+  const loadData = async ()=> {
+    await data;
+  }
   useEffect(() => {
     if (saveData) {
       setData(saveData);
     }
   }, [saveData]);
+
+
+
 
   const goNextPage = () => {
     // e.preventDefault();
@@ -315,7 +321,7 @@ const addProject = async(e)=>{
   e.preventDefault();
   const result =   await axios.post("http://52.66.198.155/api/v1/project/add", {data})
   console.log("new data added to project", result)
-  if(result?.success === true){
+  if(result?.status === 200){
     toast.success('Successfully your property saved', {
       position: "top-right",
       autoClose: 3000,
@@ -361,6 +367,7 @@ const addProject = async(e)=>{
  
 
   };
+
 
   return (
     <div className="w-full">

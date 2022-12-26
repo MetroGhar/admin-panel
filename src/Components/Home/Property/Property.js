@@ -139,7 +139,8 @@ const Property = () => {
         });
     }
   };
-
+  let testData = tableDatas?.find(items => items?._id == "63a9633575adc950e5b8f839")
+console.log("testData",testData);
   const [saveData, setSaveData] = useState({});
   const handleEdit = (data) => {
     setSaveData(data);

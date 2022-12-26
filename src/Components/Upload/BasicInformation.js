@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Select from 'react-select';
+import Select from "react-select";
 import {
   optionList,
   optionListTag,
@@ -21,38 +21,55 @@ const BasicInformation = ({ setData, data }) => {
   let opt1 = optionListTag?.map((op) => op?.label);
   let val = data?.projectconfiguration;
   let tag = data?.tag;
-  const [config, setConfig] = useState(val);
-  const [tags, setTags] = useState(tag);
+  console.log(data?.buildercontact);
+  const [config, setConfig] = useState(val || []);
+  const [tags, setTags] = useState(tag || []);
   useEffect(() => {
-    setTimeout(() => {
+    if (data?.projectconfiguration?.length > 1) {
       setConfig(data?.projectconfiguration);
-      setTags(data?.tag);
-    }, 200);
+    }
   }, [data]);
-console.log(config);
   useEffect(() => {
-    setData((prevState) => ({
-      ...prevState,
-      projectconfiguration: config,
-      tag: tags
-    }));
-  }, [config,tags]);
+    if (data?.tag?.length > 1) {
+      setTags(data?.tag);
+    }
+  }, [data])
+  // setTimeout(() => {
+  //   setConfig(val);
+  //   setTags(tag);
+  // }, 2000);
+  useEffect(() => {
+    if (data?.projectconfiguration?.length > 1) {
+      setData((prevState) => ({
+        ...prevState,
+        projectconfiguration: config,
+        tag: tags,
+      }));
+    }
+  }, [config, tags]);
   const projecttype = "Residential";
 
   const projectconfiguration = selectedOptions?.map((select) => select.value);
   const projectconTag = selectedOptionsTag?.map((select) => select.value);
-  console.log(projectconfiguration);
 
-  const handleChange = (e) =>
-    setData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-      projectconfiguration: config,
-      projectsubtype: projectsubtype,
-      projectconfiguration,
-      projecttype,
-      tag: projectconTag,
-    }));
+  const handleChange = (e) => {
+    data?._id
+      ? setData((prevState) => ({
+          ...prevState,
+          [e.target.name]: e.target.value,
+          projectsubtype: projectsubtype,
+          projecttype,
+          tag: tags,
+        }))
+      : setData((prevState) => ({
+          ...prevState,
+          [e.target.name]: e.target.value,
+          projectsubtype: projectsubtype,
+          projecttype,
+          projectconfiguration,
+          projectconTag
+        }));
+  };
 
   const handleAbout = (text) => {
     setData((prevState) => ({
@@ -113,6 +130,11 @@ console.log(config);
     const newp = propertyData.find((p) => p.id === id);
     setPropertyss(newp.value);
   };
+  // const [testData, setTestData] = useState([]);
+  // useEffect(() => {
+  //   axios.get(`http://52.66.198.155/api/v1/admin/projects?page=${2}&limit=${10}`).then(res => setTestData(res?.data))
+  // }, [data])
+  // console.log(testData);
 
   return (
     <div className="px-12 pt-16 pb-12">
@@ -319,28 +341,27 @@ console.log(config);
           <h2 className="">Property Overview</h2>
 
           <div className="mt-8 flex justify-between gap-x-14">
-          
-         
-            {
-              data?._id ? <MultiSelect
-              multiple
-              options={opt}
-              value={config}
-              name="projectconfiguration"
-              onChange={(o) => setConfig(o)}
-            /> :    <Select
-            className="w-full text-slate-400  border-slate-300  pr-3 focus:outline-none focus:border-gray-500 focus:ring-0 z-40 "
-           
-            options={optionList}
-            placeholder="Configuration"
-            onChange={handleSelect}
-            name="projectconfiguration"
-            value={selectedOptions || data?.projectconfiguration}
-            isSearchable={true}
-            isMulti
-          />
-            }
-            
+            {data?._id ? (
+              <MultiSelect
+                multiple
+                options={opt}
+                value={config}
+                name="projectconfiguration"
+                onChange={(o) => setConfig(o)}
+              />
+            ) : (
+              <Select
+                className="w-full text-slate-400  border-slate-300  pr-3 focus:outline-none focus:border-gray-500 focus:ring-0 z-40 "
+                options={optionList}
+                placeholder="Configuration"
+                onChange={handleSelect}
+                name="projectconfiguration"
+                value={selectedOptions || data?.projectconfiguration}
+                isSearchable={true}
+                isMulti
+              />
+            )}
+
             <input
               type="text"
               placeholder="Project Size"
@@ -478,28 +499,27 @@ console.log(config);
               defaultValue={data?.projectreranumber || ""}
               onChange={handleChange}
             />
-            {
-              data?._id ?  <MultiSelect
-              multiple
-              options={opt1}
-              value={tags}
-              name="tag"
-              onChange={(o) => setTags(o)}
-            /> : <Select
-            className="w-full text-slate-400  border-slate-300  pr-3 focus:outline-none focus:border-gray-500 focus:ring-0 z-40 "
-            options={optionListTag}
-            placeholder="Tag"
-            value={selectedOptionsTag || data?.tag}
-            onChange={handleSelectTag}
-            name="tag"
-            isSearchable={true}
-            isMulti
-          />
-            }
+            {data?._id ? (
+              <MultiSelect
+                multiple
+                options={opt1}
+                value={tags}
+                name="tag"
+                onChange={(o) => setTags(o)}
+              />
+            ) : (
+              <Select
+                className="w-full text-slate-400  border-slate-300  pr-3 focus:outline-none focus:border-gray-500 focus:ring-0 z-40 "
+                options={optionListTag}
+                placeholder="Tag"
+                value={selectedOptionsTag || data?.tag}
+                onChange={handleSelectTag}
+                name="tag"
+                isSearchable={true}
+                isMulti
+              />
+            )}
 
-           
-
-            
             {/* <select
               name="tag"
               onChange={handleChange}

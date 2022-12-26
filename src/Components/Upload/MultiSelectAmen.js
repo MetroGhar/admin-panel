@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "../Style/Style.css";
 
 export function MultiSelectAmen({ multiple, value, onChange, options }) {
-    console.log(options);
+
   const [isOpen, setIsOpen] = useState(false);  
   const [highlightedIndex, setHighlightedIndex] = useState(0)
   const containerRef = useRef()

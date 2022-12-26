@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "../Style/Style.css";
 
 export function MultiSelect({ multiple, value, onChange, options }) {
+  // console.log(value);
   const [isOpen, setIsOpen] = useState(false);  
   const [highlightedIndex, setHighlightedIndex] = useState(0)
   const containerRef = useRef()
@@ -13,6 +14,7 @@ export function MultiSelect({ multiple, value, onChange, options }) {
    
     if (multiple ) {
       if (value?.includes(option)) {
+       
         onChange(value?.filter(o => o !== option))
       } else {
         onChange([...value, option])

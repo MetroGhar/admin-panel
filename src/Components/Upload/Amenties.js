@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import MyMapComponent from "../MyMapComponent/MyMapComponent";
 
+import Select from 'react-select';
 import { amenties } from "./DataList";
 import { MultiSelectAmen } from "./MultiSelectAmen";
-import Select from 'react-select';
 
 // https://i.postimg.cc/2yK0HQDP/Group-2395.png
 // https://i.postimg.cc/1zGY9VGq/Group-47440.png
@@ -23,7 +23,6 @@ console.log(data);
     setData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
-      projectamenities: projectamenities,
     }));
   };
   useEffect(() => {
@@ -49,6 +48,10 @@ console.log(data);
   let amenit = data?.projectamenities?.map(pr => pr);
 
   const [amens, setAmen] = useState(amenit);
+  useEffect(() => {
+   if(data?.projectamenities?.length > 1)
+      setAmen(amenit)
+  }, [])
 
   // console.log(data?.projectamenities?.map(pr => pr?.split("name:")?.[1]));
   // useEffect(() => {
@@ -63,6 +66,7 @@ console.log(data);
       projectamenities: amens,
     }));
   }, [amens]);
+
 
   return (
     <form onSubmit={handleAmenties} className="px-12 mt-16 pb-12">
