@@ -45,12 +45,21 @@ console.log(data);
     }));
   };
   useEffect(() => {
-    setData((prevState) => ({
-      ...prevState,
-      projectamenities: amens,
-      projectlatitude: lati,
-      projectlongitude: longi,
-    }));
+    if(data?._id){
+      setData((prevState) => ({
+        ...prevState,
+        projectamenities: amens,
+        projectlatitude: lati,
+        projectlongitude: longi,
+      }));
+    }else{
+      setData((prevState) => ({
+        ...prevState,
+        projectlatitude: lati,
+        projectlongitude: longi,
+      }))
+    }
+   
   }, [lati, longi]);
 
   function handleSelect(data) {
