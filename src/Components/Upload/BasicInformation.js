@@ -21,7 +21,6 @@ const BasicInformation = ({ setData, data }) => {
   let opt1 = optionListTag?.map((op) => op?.label);
   let val = data?.projectconfiguration;
   let tag = data?.tag;
-  console.log(data?.buildercontact);
   const [config, setConfig] = useState(val || []);
   const [tags, setTags] = useState(tag || []);
   useEffect(() => {
@@ -39,13 +38,13 @@ const BasicInformation = ({ setData, data }) => {
   //   setTags(tag);
   // }, 2000);
   useEffect(() => {
-    if (data?.projectconfiguration?.length > 1) {
+    // if (data?.projectconfiguration?.length > 1) {
       setData((prevState) => ({
         ...prevState,
         projectconfiguration: config,
         tag: tags,
       }));
-    }
+    // }
   }, [config, tags]);
   const projecttype = "Residential";
 
@@ -59,6 +58,7 @@ const BasicInformation = ({ setData, data }) => {
           [e.target.name]: e.target.value,
           projectsubtype: projectsubtype,
           projecttype,
+          projectconfiguration: config,
           tag: tags,
         }))
       : setData((prevState) => ({
@@ -70,6 +70,24 @@ const BasicInformation = ({ setData, data }) => {
           projectconTag
         }));
   };
+
+  useEffect(() => {
+    data?._id
+      ? setData((prevState) => ({
+          ...prevState,
+          projectsubtype: projectsubtype,
+          projecttype,
+          projectconfiguration: config,
+          tag: tags,
+        }))
+      : setData((prevState) => ({
+          ...prevState,
+          projectsubtype: projectsubtype,
+          projecttype,
+          projectconfiguration,
+          projectconTag
+        }));
+  }, [selectedOptionsTag,selectedOptions])
 
   const handleAbout = (text) => {
     setData((prevState) => ({
@@ -130,6 +148,7 @@ const BasicInformation = ({ setData, data }) => {
     const newp = propertyData.find((p) => p.id === id);
     setPropertyss(newp.value);
   };
+  console.log(data);
   // const [testData, setTestData] = useState([]);
   // useEffect(() => {
   //   axios.get(`http://52.66.198.155/api/v1/admin/projects?page=${2}&limit=${10}`).then(res => setTestData(res?.data))

@@ -23,20 +23,20 @@ const Amenties = ({ setData, data }) => {
     // let amenit = data?.projectamenities?.map(pr => pr?.split("name:")?.[1]);
     let amenit = data?.projectamenities?.map(pr => pr);
   
-    const [amens, setAmen] = useState(amenit);
+    const [amens, setAmen] = useState(amenit || []);
     useEffect(() => {
      if(data?.projectamenities?.length > 1)
         setAmen(amenit)
-    }, [data])
+    }, [])
 
     useEffect(() => {
       if (data?.projectconfiguration?.length > 1) {
         setData((prevState) => ({
           ...prevState,
-          projectconfiguration:amens
+          projectamenities:amens
         }));
       }
-    }, [amens]);
+    }, []);
 console.log(data);
   const handleChange = (e) => {
     setData((prevState) => ({
@@ -57,10 +57,11 @@ console.log(data);
         ...prevState,
         projectlatitude: lati,
         projectlongitude: longi,
+        projectamenities:projectamenities
       }))
     }
    
-  }, [lati, longi]);
+  }, [lati, longi,selectedOptions]);
 
   function handleSelect(data) {
     setSelectedOptions(data);
