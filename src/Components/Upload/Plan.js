@@ -256,7 +256,7 @@ const Plan = ({ setAllDatas,setData, allDatas, handleDelete,handleDeletes, data 
                       </button>)
                     } */}
                     <button
-                        onClick={() => handleDeletes(index)}
+                        onClick={() => handleDeletes(item?._id)}
                         className="btn btn-xs btn-secondary"
                       >
                         Remove

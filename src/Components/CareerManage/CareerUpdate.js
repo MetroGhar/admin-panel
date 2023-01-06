@@ -17,35 +17,54 @@ const CareerUpdate = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [careerData, setCareerData] = useState();
   const [skills, setSkills] = useState(careerUp?.jobCategory);
-  console.log(careerUp);
+  let key = careerUp?.skillRequirement
+  const [tags, setTags] = useState([]);
+  useEffect(() => {
+    if(key?.length > 1){
+      setTags(key)
+    }
+    setSkills(careerUp?.jobCategory)
+  }, [key])
+  
    const handleCareer = (e) => {
-    setCareerData((prevState) => ({
+    setCareerUp((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
-      skills: skills,
+      jobCategory: skills,
       date:startDate
     }));
   }
-  console.log("career data set", careerData)
+  console.log("career data set", careerUp)
+  const removeTags = (indexToRemove) => {
+    setTags([...tags.filter((_, index) => index !== indexToRemove)]);
+  };
+  const addTags = (event) => {
+    if (event.target.value !== "") {
+      setTags([...tags, event.target.value]);
+      setTags([...tags, event.target.value]);
+      event.target.value = "";
+    }
+  };
 
 
- 
-  const handlePostCareer = async(e) => {
-    e.preventDefault();
+  const handlePost = () => {
+    handlePostCareer()
+  }
+  const handlePostCareer = async() => {
+
     const result =   await axios.post("http://52.66.198.155/api/v1/admin/job/add", {
       _id:careerupdate,
-      additionalInfo: careerData?.additional,
-      location:careerData?.careerlocation,
-      compensation:careerData?.compensation,
-      // startDate:"2022-12-08T14:30:07.422+00:00",
-      startDate:careerData?.date,
-      experience:careerData?.experience,
-      jobTitle:careerData?.jobrole,
-      workType:careerData?.jobtype,
-      description:careerData?.keyres,
-      otherRequirement:careerData?.others,
-      jobCategory:careerData?.skills,
-      skillRequirement:careerData?.skill,
+      additionalInfo: careerUp?.additionalInfo,
+      location:careerUp?.location,
+      compensation:careerUp?.compensation,
+      startDate:careerUp?.date,
+      experience:careerUp?.experience,
+      jobTitle:careerUp?.jobTitle,
+      workType:careerUp?.workType,
+      description:careerUp?.description,
+      otherRequirement:careerUp?.others,
+      jobCategory:careerUp?.jobCategory,
+      skillRequirement:tags,
     })
     if(result.status === 200){
       toast.success('Changes has been saved successfully', {
@@ -58,7 +77,7 @@ const CareerUpdate = () => {
         progress: undefined,
         theme: "light",
         });
-        e.target.reset();
+      
     }
     else{
       toast.warn('Opps! try again', {
@@ -76,6 +95,7 @@ const CareerUpdate = () => {
     console.log("career data set", result)
   }
   return (
+    <>
     <form onSubmit={handlePostCareer} className="py-3">
     <div className="px-4 py-8 rounded-lg border m-10 bg-[#FDFDFD]">
       <div className="px-6">
@@ -86,23 +106,28 @@ const CareerUpdate = () => {
 
         <div className="flex justify-evenly items-center mt-12">
           <div onClick={() => setSkills("BusinessDevlop")}  className="flex gap-x-1 justify-center items-center">
-            <input type="radio" name="group" value="happy" id="rad1" />
+            {/* <input type="radio" name="group" value="happy" id="rad1" /> */}
+            <div className={ `border h-4 border-gray-600 w-4 rounded-full ${(skills) === "BusinessDevlop" ? "bg-primary border-none" : "" }`}></div>
             <label htmlFor="rad1">Business Development</label>
           </div>
           <div onClick={() => setSkills("Marketing")} className="flex gap-x-1 justify-center items-center">
-            <input type="radio" name="group" value="happy" id="rad2" />
+            {/* <input type="radio" name="group" value="happy" id="rad2" /> */}
+            <div className={ `border h-4 border-gray-600 w-4 rounded-full ${(skills) === "Marketing" ? "bg-primary border-none" : "" }`}></div>
             <label htmlFor="rad2">Marketing</label>
           </div>
           <div onClick={() => setSkills("TechDesign")} className="flex gap-x-1 justify-center items-center">
-            <input type="radio" name="group" value="happy" id="rad3" />
+            {/* <input type="radio" name="group" value="happy" id="rad3" /> */}
+            <div className={ `border h-4 border-gray-600 w-4 rounded-full ${(skills) === "TechDesign" ? "bg-primary border-none" : "" }`}></div>
             <label htmlFor="rad3">Tech & Design</label>
           </div>
           <div onClick={() => setSkills("Operations")} className="flex gap-x-1 justify-center items-center">
-            <input type="radio" name="group" value="happy" id="rad4" />
+            {/* <input type="radio" name="group" value="happy" id="rad4" /> */}
+            <div className={ `border h-4 border-gray-600 w-4 rounded-full ${(skills) === "Operations" ? "bg-primary border-none" : "" }`}></div>
             <label htmlFor="rad4">Operations</label>
           </div>
           <div onClick={() => setSkills("Others")} className="flex gap-x-1 justify-center items-center">
-            <input type="radio" name="group" value="happy" id="rad5" />
+            {/* <input type="radio" name="group" value="happy" id="rad5" /> */}
+            <div className={ `border h-4 border-gray-600 w-4 rounded-full ${(skills) === "Others" ? "bg-primary border-none" : "" }`}></div>
             <label htmlFor="rad5">Others</label>
           </div>
         </div>
@@ -110,7 +135,7 @@ const CareerUpdate = () => {
         <div className="mt-12">
           <h2>Job Role</h2>
         
-          <input onChange={handleCareer} type="text" name="jobrole" 
+          <input onChange={handleCareer} type="text" name="jobTitle" 
            defaultValue={careerUp?.jobTitle}
           placeholder="UX UI Designer" className="input input-bordered w-full input-sm" />
 
@@ -119,13 +144,13 @@ const CareerUpdate = () => {
                 <h2>Location</h2>
                 <input onChange={handleCareer} type="text" 
                 defaultValue={careerUp?.location}
-                placeholder="Bangalore" name="careerlocation" className="input input-bordered input-sm w-full max-w-xs"  />
+                placeholder="Bangalore" name="location" className="input input-bordered input-sm w-full max-w-xs"  />
             </div>
             <div className="div">
                 <h2>Job Type</h2>
                 <input onChange={handleCareer} type="text" 
                 defaultValue={careerUp?.workType}
-                placeholder="Bangalore" name="jobtype" className="input input-bordered input-sm w-full max-w-xs"  />
+                placeholder="Bangalore" name="workType" className="input input-bordered input-sm w-full max-w-xs"  />
             </div>
             <div className="div">
                 <h2>Experience Required</h2>
@@ -149,24 +174,49 @@ const CareerUpdate = () => {
 
           <div className="mt-6">
             <h2>Key Resposibilities</h2>
-            <textarea  defaultValue={careerUp?.otherRequirement} onChange={handleCareer} name="keyres" className="textarea textarea-bordered w-full" placeholder="text"></textarea>
+            <textarea  defaultValue={careerUp?.description} onChange={handleCareer} name="description" className="textarea textarea-bordered w-full" placeholder="text"></textarea>
           </div>
 
           <div className="mt-6">
             <h2>Skills Required</h2>
-            <input onChange={handleCareer} defaultValue={careerUp?.skillRequirement} name="skill" type="text" className="input input-bordered input-sm w-full mt-2" />
+            <div className="tags-input w-full">
+                  <ul id="tags">
+                    {tags.map((tag, index) => (
+                      <li key={index} className="tag">
+                        <span className="tag-title">{tag}</span>
+                        <span
+                          className="tag-close-icon"
+                          onClick={() => removeTags(index)}
+                        >
+                          x
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  <input
+                    type="text"
+                    onKeyUp={(event) =>
+                      event.key === "Enter" ? addTags(event) : null
+                    }
+                    placeholder="Press enter to add skill"
+                    className="focus:outline-none w-full inputs"
+                  />
+                </div>
           </div>
          
           <div className="mt-6">
             <h2>Additional Information (Optional)</h2>
-            <textarea defaultValue={careerUp?.description} onChange={handleCareer} name="additional" className="textarea textarea-bordered w-full" placeholder="text"></textarea>
+            <textarea defaultValue={careerUp?.additionalInfo} onChange={handleCareer} name="additionalInfo" className="textarea textarea-bordered w-full" placeholder="text"></textarea>
           </div>
         </div>
       </div>
     </div>
 
-    <input type="submit" value="Post" className="bulk-button px-10 py-1 text-white flex justify-center items-center mx-auto" />
+   
     </form>
+
+    <button onClick={() => handlePost()}  className="bulk-button px-10 py-1 text-white flex justify-center items-center mx-auto" >Post</button>
+    </>
   );
 };
 

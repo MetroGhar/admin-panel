@@ -1,5 +1,6 @@
 import JoditEditor from "jodit-react";
 import React, { useRef } from "react";
+import "../Style/Style.css"
 
 const config = {
  
