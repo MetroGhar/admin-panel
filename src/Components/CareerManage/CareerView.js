@@ -25,7 +25,7 @@ const CareerView = () => {
         const verifyData = idVerify?.filter(idv => idv?.jobId?._id === careerview)
         setCareerResponse(verifyData)});
   }, []);
-  console.log(careerResponse);
+
   return (
     <div className="p-6">
       <div className="flex justify-between items-center rounded-xl border-2 border-gray-200">

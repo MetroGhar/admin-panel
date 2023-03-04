@@ -1,51 +1,27 @@
 import { Pagination } from "@mui/material";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import eyeSmall from "../../Assest/download__13_-removebg-preview 6.png";
 import pencil from "../../Assest/icons8-pencil-96 1.png";
 import deleted from "../../Assest/icons8-remove-96 1.png";
 import person from "../../Assest/navbar/user-square.png";
+import { useDeleteCareerDataMutation, useGetCareerDataQuery } from "../../feature/api/apiEndPoint/careerApi";
 import "../Style/Style.css";
 
 const CareerManage = () => {
-  const [renderApi, setRenderApi] = useState(false);
-  const [tableDatas, setTableDatas] = useState([]);
-  const [loading, setLoading] = useState(false);
+
+  // redux state
+
+  const {isLoading, data} = useGetCareerDataQuery();
+  const [deleteCareer] = useDeleteCareerDataMutation()
+  // local state
+
+
   const [dataPerPage, setDataPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
   const [filterData, setFilterData] = useState("All");
-  const [bookes, setBookes] = useState(0);
-  const [mark, setMark] = useState(0);
-  const [tech, setTech] = useState(0);
-  const [opara, setOpera] = useState(0);
-  const [othr, setOthr] = useState(0);
-
-  useEffect(() => {
-    setLoading(true);
-    axios.get(`http://52.66.198.155/api/v1/admin/job/list`).then((res) => {
-      setTableDatas(res.data?.data);
-      setBookes(res.data?.data?.filter((itm) => itm?.jobCategory === "Booking"));
-      setMark(res.data?.data?.filter((itm) => itm?.jobCategory === "Marketing"));
-      setTech(res.data?.data?.filter((itm) => itm?.jobCategory === "TechDesign"));
-      setOpera(res.data?.data?.filter((itm) => itm?.jobCategory === "Operation"));
-      setOthr(res.data?.data?.filter((itm) => itm?.jobCategory === "Others"));
-
-      setLoading(false);
-    });
-  }, [dataPerPage, currentPage, renderApi]);
-
-  const [length, setLength] = useState();
-  useEffect(() => {
-    setLoading(true);
-    axios.get(`http://52.66.198.155/api/v1/admin/job/list`).then((res) => {
-      setLength(res.data?.data);
-
-      setLoading(false);
-    });
-  }, []);
 
   const handleChange = (e, p) => {
     setCurrentPage(p);
@@ -56,12 +32,12 @@ const CareerManage = () => {
   };
 
   const [toggle, setToggle] = useState(false);
-  const handleDeleteData = (delId) => {
-    axios
-      .delete(`http://52.66.198.155/api/v1/admin/job/delete/${delId}`)
-      .then((res) => {
-        if (res?.data?.success === true) {
-          setRenderApi(true);
+  const handleDeleteData = async (delId) => {
+    // axios
+    //   .delete(`http://52.66.198.155/api/v1/admin/job/delete/${delId}`)
+    //   .then((res) => {
+      const result = await deleteCareer({delId})
+        if (result?.data?.success === true) {
           toast.success("Your selected job has been deactivated successfully", {
             position: "top-right",
             autoClose: 5000,
@@ -84,9 +60,8 @@ const CareerManage = () => {
             theme: "light",
           });
         }
-      });
+      
   };
-  console.log(tableDatas);
   return (
     <div className="py-16 px-12">
       <div className="flex flex-col justify-between items-end gap-3 rounded-2xl  border-gray-200 py-1 px-2">
@@ -97,37 +72,37 @@ const CareerManage = () => {
               filterData === "All" ? "border-2 border-primary" : ""
             } px-3 w-full py-2 cursor-pointer rounded-lg`}
           >
-            <p className="text-sm">All</p> {tableDatas?.length}
+            <p className="text-sm">All</p> {data?.data?.length}
           </div>
           <div  onClick={() => setFilterData("BusinessDevelop")}
             className={`shadow-lg ${
               filterData === "BusinessDevelop" ? "border-2 border-primary" : ""
             } px-3 w-full py-2 cursor-pointer rounded-lg`}>
-            <p className="text-sm"><span className="flex gap-x-2"> Business <span> Development</span> </span></p> {bookes?.length}
+            <p className="text-sm"><span className="flex gap-x-2"> Business <span> Development</span> </span></p> {(data?.data?.filter((itm) => itm?.jobCategory === "BusinessDevelop")?.length)}
           </div>
           <div  onClick={() => setFilterData("Marketing")}
             className={`shadow-lg ${
               filterData === "Marketing" ? "border-2 border-primary" : ""
             } px-3 w-full py-2 cursor-pointer rounded-lg`}>
-            <p className="text-sm">Marketing</p> {mark?.length}
+            <p className="text-sm">Marketing</p> {(data?.data?.filter((itm) => itm?.jobCategory === "Marketing")?.length)}
           </div>
           <div  onClick={() => setFilterData("TechDesign")}
             className={`shadow-lg ${
               filterData === "TechDesign" ? "border-2 border-primary" : ""
             } px-3 w-full py-2 cursor-pointer rounded-lg`}>
-            <p className="text-sm">Tech & Design</p> {tech?.length}
+            <p className="text-sm">Tech & Design</p> {(data?.data?.filter((itm) => itm?.jobCategory === "TechDesign")?.length)}
           </div>
           <div onClick={() => setFilterData("Operation")}
             className={`shadow-lg ${
               filterData === "Operation" ? "border-2 border-primary" : ""
             } px-3 w-full py-2 cursor-pointer rounded-lg`}>
-            <p className="text-sm">Operation</p> {opara?.length}
+            <p className="text-sm">Operation</p> {(data?.data?.filter((itm) => itm?.jobCategory === "Operation")?.length)}
           </div>
           <div onClick={() => setFilterData("Others")}
             className={`shadow-lg ${
               filterData === "Others" ? "border-2 border-primary" : ""
             } px-3 w-full py-2 cursor-pointer rounded-lg`}>
-            <p className="text-sm">Others</p> {othr?.length}
+            <p className="text-sm">Others</p> {(data?.data?.filter((itm) => itm?.jobCategory === "Others")?.length)}
           </div>
         </div>
         <div className="cursor-pointer flex justify-center items-center">
@@ -192,7 +167,7 @@ const CareerManage = () => {
           </div>
         </div>
 
-        {loading ? (
+        {isLoading ? (
           <div class="lds-roller">
             <div></div>
             <div></div>
@@ -226,7 +201,7 @@ const CareerManage = () => {
                 <th>Action</th>
               </tr>
             </thead>
-            {tableDatas?.filter((item) =>
+            {data?.data?.filter((item) =>
                 filterData === "All"
                   ? item
                   : item.jobCategory === filterData
@@ -336,7 +311,7 @@ const CareerManage = () => {
 
         <div className="mx-auto flex justify-center mt-4">
           <Pagination
-            count={Math.ceil(length / dataPerPage)}
+            count={Math.ceil(data?.data?.length / dataPerPage)}
             // count={20}
             page={currentPage}
             onChange={handleChange}

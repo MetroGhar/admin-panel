@@ -1,15 +1,21 @@
 import axios from "axios";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import cancel from "../../Assest/icons8-cancel-64 2.png";
 import camera from "../../Assest/Subtract1.png";
+import { getAllProperty } from "../../feature/propertySlice/propertySlice";
 
-const BuldierProfile = ({ data, handleSubmit, setData }) => {
+const BuldierProfile = ({handleSubmit }) => {
+    // code with redux
+    const dispatch = useDispatch();
+    const data = useSelector((state) => state.property);
   
-  const handleChange = (e) =>
-    setData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
+  
+  
+    // code with local state
+  const handleChange = (e) => {
+    dispatch(getAllProperty({ name: e.target.name,data: e.target.value}))
+  };
 
   const uploadImage = async(e)=>{
         const file = e.target.files[0];
@@ -17,7 +23,7 @@ const BuldierProfile = ({ data, handleSubmit, setData }) => {
         formData.append("image",file);
         console.log("this is image",formData);
     
-  await fetch("http://52.66.198.155/api/v1/multipleimage/upload", {
+  await fetch("http://52.66.198.155/api/v1/image/upload", {
       method: "POST",
       // headers: {
       //   "Content-Type": "multipart/form-data",
@@ -28,11 +34,13 @@ const BuldierProfile = ({ data, handleSubmit, setData }) => {
 
       ))
       .then((data) => 
-        setData((prevState) => ({
-        ...prevState,
-        builderimage: data.imgUrl,
-      }
-      )));
+      //   setData((prevState) => ({
+      //   ...prevState,
+      //   builderimage: data.imgUrl,
+      // }
+      // ))
+      dispatch(getAllProperty({ name: "builderimage",data: data?.imgUrl}))
+      );
    console.log("this is full project data",data)
   }
   const deleteImage = async(tag)=>{
@@ -40,15 +48,15 @@ const BuldierProfile = ({ data, handleSubmit, setData }) => {
     console.log("hello",tag)
     await axios.post("http://52.66.198.155/api/v1/image/delete",{tag})
       .then(() => 
-        setData((prevState) => ({
-        ...prevState,
-        builderimage: null,
-      }
-      )));
+      //   setData((prevState) => ({
+      //   ...prevState,
+      //   builderimage: null,
+      // }
+      // ))
+      dispatch(getAllProperty({ name: "builderimage",data: ""}))
+      );
    
   }
-
-  console.log(data?.builderimage?.secure_url);
 
   return (
     <div className="px-12 mt-14 pb-12">
@@ -95,7 +103,7 @@ const BuldierProfile = ({ data, handleSubmit, setData }) => {
             <div className="w-24 rounded-full ">
               <img src={data?.builderimage} alt="" />
             </div>
-            { data.builderimage ? ""
+            { data?.builderimage ? ""
             :
             <input
             hidden
@@ -106,7 +114,7 @@ const BuldierProfile = ({ data, handleSubmit, setData }) => {
             />
           }
             <label htmlFor="imageUser" className="w-6  h-6 cursor-pointer">
-              { data.builderimage ?  <img className="img-fluid" onClick={()=>deleteImage(data.builderimage)} src={cancel} alt="" /> :
+              { data?.builderimage ?  <img className="img-fluid" onClick={()=>deleteImage(data?.builderimage)} src={cancel} alt="" /> :
               <img className="img-fluid"  src={camera} alt="" /> }
             </label>
           </div>

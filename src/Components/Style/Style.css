@@ -461,6 +461,56 @@ input[type="number"]::-webkit-outer-spin-button {
   cursor: pointer;
 }
 
+/* lead details */
+
+.product {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.productInput {
+  height: 18px;
+  width: 18px;
+  background-image: url("../../Assest/leadDetails/check_box_outline_blank_24px.png");
+  border-radius: 3px;
+  position: relative;
+}
+
+.active {
+  height: 18px;
+  width: 18px;
+  background-image: url("../../Assest/leadDetails/check_box_outline_blank_24fghpx.png");
+  border-radius: 3px;
+  position: relative;
+}
+.productInputBefore {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+.productInputAfter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+.productInput > input {
+  appearance: none;
+}
+.productInput,
+.product > label {
+  cursor: pointer;
+}
+
 @media screen and (max-width: 567px) {
   .tags-input {
     width: calc(100vw - 32px);

@@ -15,7 +15,6 @@ const CareerUpdate = () => {
     axios.get(`http://52.66.198.155/api/v1/admin/job/${careerupdate}`).then(res => setCareerUp(res?.data?.data))
   }, [])
   const [startDate, setStartDate] = useState(new Date());
-  const [careerData, setCareerData] = useState();
   const [skills, setSkills] = useState(careerUp?.jobCategory);
   let key = careerUp?.skillRequirement
   const [tags, setTags] = useState([]);
@@ -34,7 +33,6 @@ const CareerUpdate = () => {
       date:startDate
     }));
   }
-  console.log("career data set", careerUp)
   const removeTags = (indexToRemove) => {
     setTags([...tags.filter((_, index) => index !== indexToRemove)]);
   };

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Select from "react-select";
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllProperty } from "../../feature/propertySlice/propertySlice";
 import {
   optionList,
   optionListTag,
@@ -9,14 +10,15 @@ import {
 } from "./DataList";
 import { MultiSelect } from "./MultiSelect";
 import TextField from "./TextField";
+const BasicInformation = () => {
 
-const BasicInformation = ({ setData, data }) => {
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const [selectedOptionsTag, setSelectedOptionsTag] = useState([]);
-  const [propertyData, setPropertyDataUser] = useState(propertySub);
-  const [propertyes, setPropertyes] = useState(property);
-  const [subType, setSubType] = useState("");
-  const [projectsubtype, setPropertyss] = useState();
+  // code with redux
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.property);
+
+
+
+  // code with local state
   let opt = optionList?.map((op) => op?.label);
   let opt1 = optionListTag?.map((op) => op?.label);
   let val = data?.projectconfiguration;
@@ -33,73 +35,15 @@ const BasicInformation = ({ setData, data }) => {
       setTags(data?.tag);
     }
   }, [data])
-  // setTimeout(() => {
-  //   setConfig(val);
-  //   setTags(tag);
-  // }, 2000);
-  useEffect(() => {
-    // if (data?.projectconfiguration?.length > 1) {
-      setData((prevState) => ({
-        ...prevState,
-        projectconfiguration: config,
-        tag: tags,
-      }));
-    // }
-  }, [config, tags]);
-  const projecttype = "Residential";
 
-  const projectconfiguration = selectedOptions?.map((select) => select.value);
-  const projectconTag = selectedOptionsTag?.map((select) => select.value);
+  useEffect(() => {
+    dispatch(getAllProperty({ name:"projectconfiguration" ,data:config }))
+    dispatch(getAllProperty({ name:"tag" ,data:tags }))
+  }, [config, tags]);
 
   const handleChange = (e) => {
-    data?._id
-      ? setData((prevState) => ({
-          ...prevState,
-          [e.target.name]: e.target.value,
-          projectsubtype: projectsubtype,
-          projecttype,
-          projectconfiguration: config,
-          tag: tags,
-        }))
-      : setData((prevState) => ({
-          ...prevState,
-          [e.target.name]: e.target.value,
-          projectsubtype: projectsubtype,
-          projecttype,
-          projectconfiguration,
-          projectconTag
-        }));
-  };
-
-  useEffect(() => {
-    data?._id
-      ? setData((prevState) => ({
-          ...prevState,
-          projectsubtype: projectsubtype,
-          projecttype,
-          projectconfiguration: config,
-          tag: tags,
-        }))
-      : setData((prevState) => ({
-          ...prevState,
-          projectsubtype: projectsubtype,
-          projecttype,
-          projectconfiguration,
-          projectconTag
-        }));
-  }, [selectedOptionsTag,selectedOptions])
-
-  const handleAbout = (text) => {
-    setData((prevState) => ({
-      ...prevState,
-      aboutproject: text,
-    }));
-  };
-  const handleSpecification = (text) => {
-    setData((prevState) => ({
-      ...prevState,
-      projectspecification: text,
-    }));
+    dispatch(getAllProperty({ name: e.target.name,data: e.target.value}))
+   
   };
 
   const handleBuilder = (e) => {
@@ -135,26 +79,6 @@ const BasicInformation = ({ setData, data }) => {
     // }
   };
 
-  function handleSelect(data) {
-    setSelectedOptions(data);
-  }
-  function handleSelectTag(data) {
-    setSelectedOptionsTag(data);
-  }
-
-  const handleSubType = (id) => {
-    setSubType(id);
-
-    const newp = propertyData.find((p) => p.id === id);
-    setPropertyss(newp.value);
-  };
-  console.log(data);
-  // const [testData, setTestData] = useState([]);
-  // useEffect(() => {
-  //   axios.get(`http://52.66.198.155/api/v1/admin/projects?page=${2}&limit=${10}`).then(res => setTestData(res?.data))
-  // }, [data])
-  // console.log(testData);
-
   return (
     <div className="px-12 pt-16 pb-12">
       <from onSubmit={handleBuilder}>
@@ -166,6 +90,7 @@ const BasicInformation = ({ setData, data }) => {
             name="projectname"
             defaultValue={data?.projectname || ""}
             onChange={handleChange}
+            
           />
           <input
             className=" placeholder:text-slate-400 block w-full border-b-2 border-slate-300 py-2 pr-3 focus:outline-none focus:border-gray-500 focus:ring-0 sm:text-sm"
@@ -214,7 +139,7 @@ const BasicInformation = ({ setData, data }) => {
         <div className="mt-12">
           <h2 className="font-bold">Property Type</h2>
           <div className="mt-8 flex justify-start gap-x-12">
-            {propertyes.map((item) => (
+            {property?.map((item) => (
               <div key={item.id} className="">
                 <div>
                   <input hidden type="checkbox" id={item.id} />
@@ -234,14 +159,14 @@ const BasicInformation = ({ setData, data }) => {
         <div className="mt-12">
           <h2 className="font-bold">Property Sub - Type</h2>
           <div className="flex flex-wrap gap-y-8 gap-x-8 w-full mt-6 justify-start items-center">
-            {propertyData.map((property, index) => (
+            {propertySub.map((property, index) => (
               <>
                 <p
                   key={index}
-                  onClick={() => handleSubType(property.id)}
+                  // onClick={() => handleSubType(property.id)}
+                  onClick={() => dispatch(getAllProperty({ name:"projectsubtype" ,data: property.value}))}
                   className={`px-3 py-2 border border-primary rounded-lg cursor-pointer ${
-                    subType === property.id ||
-                    (subType?.length <= 0 &&
+                    (
                       data?.projectsubtype === property.value)
                       ? "bg-primary text-white"
                       : "text-primary"
@@ -360,7 +285,7 @@ const BasicInformation = ({ setData, data }) => {
           <h2 className="">Property Overview</h2>
 
           <div className="mt-8 flex justify-between gap-x-14">
-            {data?._id ? (
+            {/* {data?._id ? (
               <MultiSelect
                 multiple
                 options={opt}
@@ -379,8 +304,14 @@ const BasicInformation = ({ setData, data }) => {
                 isSearchable={true}
                 isMulti
               />
-            )}
-
+            )} */}
+<MultiSelect
+                multiple
+                options={opt}
+                value={config || data?.projectconfiguration}
+                name="projectconfiguration"
+                onChange={(o) => setConfig(o)}
+              />
             <input
               type="text"
               placeholder="Project Size"
@@ -518,7 +449,7 @@ const BasicInformation = ({ setData, data }) => {
               defaultValue={data?.projectreranumber || ""}
               onChange={handleChange}
             />
-            {data?._id ? (
+            {/* {data?._id ? (
               <MultiSelect
                 multiple
                 options={opt1}
@@ -537,7 +468,14 @@ const BasicInformation = ({ setData, data }) => {
                 isSearchable={true}
                 isMulti
               />
-            )}
+            )} */}
+             <MultiSelect
+                multiple
+                options={opt1}
+                value={tags || data?.tag}
+                name="tag"
+                onChange={(o) => setTags(o)}
+              />
 
             {/* <select
               name="tag"
@@ -571,15 +509,17 @@ const BasicInformation = ({ setData, data }) => {
 
           <TextField
             initialValue={data?.aboutproject || ""}
-            getValue={(value) => handleAbout(value)}
+            // getValue={(value) => handleAbout(value)}
+            // getValue={(value) => handleAbout(value)}
+            name={"aboutproject"}
           />
         </div>
         <div className="mt-12">
           <h2>Project Specification</h2>
-
           <TextField
             initialValue={data?.projectspecification || ""}
-            getValue={(value) => handleSpecification(value)}
+            // getValue={(value) => handleSpecification(value)}
+            name={"projectspecification"}
           />
         </div>
       </from>

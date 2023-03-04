@@ -37,11 +37,6 @@ function App() {
 
           <Route path="lead" element={<Lead />} /> 
           <Route path="lead/:addlead" element={<LeadDetails />} />
-        
-
-         
-
-         
           <Route path="profile" element={<Profile />} />
           <Route path="user" element={<User />} />
           <Route path="careermanage" element={<CareerManage />} />

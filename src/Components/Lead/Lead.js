@@ -1,70 +1,24 @@
 import { Pagination } from "@mui/material";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import eyeSmall from "../../Assest/download__13_-removebg-preview 6.png";
 import pencil from "../../Assest/icons8-pencil-96 1.png";
 import deleted from "../../Assest/icons8-remove-96 1.png";
 import exlogo from "../../Assest/property/Vector (4).png";
+import { useGetLeadDataQuery } from "../../feature/api/apiEndPoint/getLeadData";
 import "../Style/Style.css";
 
 const Lead = () => {
-  const [allData, setAllData] = useState([]);
+  // redux
 
-  const [tableDatas, setTableDatas] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const { isLoading, isError, error, data } = useGetLeadDataQuery();
+  // local state
+
   const [dataPerPage, setDataPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [process, setProcess] = useState(0);
-  const [tellyCall, setTellyCall] = useState(0);
-  const [siteVisi, setSiteVisi] = useState(0);
-  const [salesTeam, setsalesTeam] = useState(0);
-  const [booking, setBooking] = useState(0);
-  const [close, setClose] = useState(0);
-  const [cancel, setCancel] = useState(0);
+
   const navigate = useNavigate();
   const [filterData, setFilterData] = useState("All");
-  console.log(tableDatas);
-  useEffect(() => {
-    setLoading(true);
-    axios.get(`http://52.66.198.155/api/v1/admin/leads`).then((res) => {
-      setTableDatas(res.data?.Leads);
-      setProcess(
-        res.data?.Leads?.filter((itm) => itm?.status === "Processing")
-      );
-      setTellyCall(
-        res.data?.Leads?.filter((itm) => itm?.status === "TellyCalling")
-      );
-      setSiteVisi(
-        res.data?.Leads?.filter((itm) => itm?.status === "SiteVisit")
-      );
-      setsalesTeam(
-        res.data?.Leads?.filter((itm) => itm?.status === "SalesTeam")
-      );
-      setBooking(res.data?.Leads?.filter((itm) => itm?.status === "Booking"));
-      setClose(res.data?.Leads?.filter((itm) => itm?.status === "Closed"));
-      setCancel(res.data?.Leads?.filter((itm) => itm?.status === "cancel"));
-
-      setLoading(false);
-    });
-  }, [dataPerPage, currentPage]);
-
-  const [length, setLength] = useState();
-
-  useEffect(() => {
-    setLoading(true);
-    axios.get(`http://52.66.198.155/api/v1/admin/leads`).then((res) => {
-      setLength(res.data?.Leads);
-
-      setLoading(false);
-    });
-  }, []);
-  useEffect(() => {
-    if (allData.length) {
-      setTableDatas(allData);
-    }
-  }, [allData]);
-
   const handleChange = (e, p) => {
     setCurrentPage(p);
   };
@@ -83,7 +37,7 @@ const Lead = () => {
               filterData === "All" ? "border-2 border-primary" : ""
             } px-3 w-full py-2 cursor-pointer rounded-lg`}
           >
-            <p className="text-sm">All</p> {tableDatas?.length}
+            <p className="text-sm">All</p> {data?.searchResult}
           </div>
           <div
             onClick={() => setFilterData("Processing")}
@@ -91,7 +45,8 @@ const Lead = () => {
               filterData === "Processing" ? "border-2 border-primary" : ""
             } px-3 w-full py-2 cursor-pointer rounded-lg`}
           >
-            <p className="text-sm">Processing</p> {process?.length}
+            <p className="text-sm">Processing</p>{" "}
+            {data?.Leads?.filter((itm) => itm?.status === "Processing")?.length}
           </div>
           <div
             onClick={() => setFilterData("TellyCalling")}
@@ -99,7 +54,11 @@ const Lead = () => {
               filterData === "TellyCalling" ? "border-2 border-primary" : ""
             } px-3 w-full py-2 cursor-pointer rounded-lg`}
           >
-            <p className="text-sm">Telly Calling</p> {tellyCall?.length}
+            <p className="text-sm">Telly Calling</p>{" "}
+            {
+              data?.Leads?.filter((itm) => itm?.status === "TellyCalling")
+                ?.length
+            }
           </div>
           <div
             onClick={() => setFilterData("SiteVisit")}
@@ -107,7 +66,8 @@ const Lead = () => {
               filterData === "SiteVisit" ? "border-2 border-primary" : ""
             } px-3 w-full py-2 cursor-pointer rounded-lg`}
           >
-            <p className="text-sm">Site visit</p> {siteVisi?.length}
+            <p className="text-sm">Site visit</p>{" "}
+            {data?.Leads?.filter((itm) => itm?.status === "SiteVisit")?.length}
           </div>
           <div
             onClick={() => setFilterData("SalesTeam")}
@@ -115,7 +75,8 @@ const Lead = () => {
               filterData === "SalesTeam" ? "border-2 border-primary" : ""
             } px-3 w-full py-2 cursor-pointer rounded-lg`}
           >
-            <p className="text-sm">Sales Team</p> {salesTeam?.length}
+            <p className="text-sm">Sales Team</p>{" "}
+            {data?.Leads?.filter((itm) => itm?.status === "SalesTeam")?.length}
           </div>
           <div
             onClick={() => setFilterData("Booking")}
@@ -123,7 +84,8 @@ const Lead = () => {
               filterData === "Booking" ? "border-2 border-primary" : ""
             } px-3 w-full py-2 cursor-pointer rounded-lg`}
           >
-            <p className="text-sm">Booking</p> {booking?.length}
+            <p className="text-sm">Booking</p>{" "}
+            {data?.Leads?.filter((itm) => itm?.status === "Booking")?.length}
           </div>
           <div
             onClick={() => setFilterData("Closed")}
@@ -131,7 +93,8 @@ const Lead = () => {
               filterData === "Closed" ? "border-2 border-primary" : ""
             } px-3 w-full py-2 cursor-pointer rounded-lg`}
           >
-            <p className="text-sm">Closed</p> {close?.length}
+            <p className="text-sm">Closed</p>{" "}
+            {data?.Leads?.filter((itm) => itm?.status === "Closed")?.length}
           </div>
           <div
             onClick={() => setFilterData("Cancel")}
@@ -139,7 +102,8 @@ const Lead = () => {
               filterData === "Cancel" ? "border-2 border-primary" : ""
             } px-3 w-full py-2 cursor-pointer rounded-lg`}
           >
-            <p className="text-sm">Cancel</p> {cancel?.length}
+            <p className="text-sm">Cancel</p>{" "}
+            {data?.Leads?.filter((itm) => itm?.status === "Cancel")?.length}
           </div>
         </div>
         <div className="cursor-pointer flex justify-center items-center">
@@ -159,7 +123,6 @@ const Lead = () => {
             placeholder="Search"
             className="border p-2 input-bordered w-xl"
           />
-         
         </div>
         <div className="mb-8 flex justify-between items-center px-4">
           <div className="flex justify-start gap-x-2 items-center">
@@ -228,7 +191,7 @@ const Lead = () => {
           </div>
         </div>
 
-        {loading ? (
+        {isLoading ? (
           <div class="lds-roller">
             <div></div>
             <div></div>
@@ -261,12 +224,13 @@ const Lead = () => {
                 <th>Action</th>
               </tr>
             </thead>
-            {tableDatas?.filter((item) =>
-                filterData === "All"
-                  ? item
-                  : item.status === filterData
-              )?.map((table, index) => (
-              <tbody className="w-full hover:bg-[#E7F9FC] cursor-pointer" key={index}>
+            {data?.Leads?.filter((item) =>
+              filterData === "All" ? item : item.status === filterData
+            )?.map((table, index) => (
+              <tbody
+                className="w-full hover:bg-[#E7F9FC] cursor-pointer"
+                key={index}
+              >
                 <tr className="text-sm h-14 w-full text-center hover border-b-2">
                   <td className="px-2">
                     <div key={index} className="product">
@@ -329,28 +293,20 @@ const Lead = () => {
                     <button
                       className={`bg-[#4EC615] ${
                         table?.status === "TellyCalling" && "bg-[#71A9FC]"
-                      } ${
-                        table?.status === "SiteVisit" && "bg-[#FAE52C]"
-                      }
+                      } ${table?.status === "SiteVisit" && "bg-[#FAE52C]"}
                       
-                      ${
-                        table?.status === "SalesTeam" && "bg-[#C68A15]"
-                      }
+                      ${table?.status === "SalesTeam" && "bg-[#C68A15]"}
 
-                      ${
-                        table?.status === "Booking" && "bg-[#F96AA6]"
-                      }
+                      ${table?.status === "Booking" && "bg-[#F96AA6]"}
 
-                      ${
-                        table?.status === "Closed" && "bg-[#4EC615]"
-                      }
+                      ${table?.status === "Closed" && "bg-[#4EC615]"}
 
-                      ${
-                        table?.status === "Processing" && "bg-[#FDAF87]"
-                      }
+                      ${table?.status === "Processing" && "bg-[#FDAF87]"}
                       p-1 px-2 text-[11px] rounded-lg text-[#000000]`}
                     >
-                      {table.status === "TellyCalling" && "Telly Calling"} {table.status === "SiteVisit" && "Site Visit"} {table.status === "SalesTeam" && "Sales Team"}
+                      {table.status === "TellyCalling" && "Telly Calling"}{" "}
+                      {table.status === "SiteVisit" && "Site Visit"}{" "}
+                      {table.status === "SalesTeam" && "Sales Team"}
                       {table.status === "Booking" && "Booking"}
                       {table.status === "Closed" && "Closed"}
                       {table.status === "Processing" && "Processing"}
@@ -391,7 +347,7 @@ const Lead = () => {
 
         <div className="mx-auto flex justify-center mt-4">
           <Pagination
-            count={Math.ceil(length / dataPerPage)}
+            count={Math.ceil(data?.searchResult / dataPerPage)}
             // count={20}
             page={currentPage}
             onChange={handleChange}

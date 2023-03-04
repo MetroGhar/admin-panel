@@ -1,24 +1,34 @@
 import axios from "axios";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import cancel from "../../Assest/icons8-cancel-64 2.png";
-const Legal = ({ setData, data }) => {
+import { getAllProperty } from "../../feature/propertySlice/propertySlice";
+const Legal = () => {
+
+    // code with redux
+    const dispatch = useDispatch();
+    const data = useSelector((state) => state.property);
+  
+  
+  
+    // code with local state
   const uploadImage = async (e) => {
     const file = e.target.files[0];
     const formData = new FormData();
+    formData.append("image",file);
 
   const result =   await axios.post("http://52.66.198.155/api/v1/image/upload", formData)
       console.log("this is image response ",result.data.imgUrl)
-      setData((prevState) => ({
-        ...prevState,
-        [e.target.name]: result.data.imgUrl,
-      }))
+      // setData((prevState) => ({
+      //   ...prevState,
+      //   [e.target.name]: result.data.imgUrl,
+      // }))
+      dispatch(getAllProperty({ name: e.target.name,data: result.data.imgUrl}))
     
   };
   const handleChange = (e) => {
-    setData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
+    dispatch(getAllProperty({ name: e.target.name,data: e.target.value}))
+    
   };
 
 
@@ -32,10 +42,11 @@ const Legal = ({ setData, data }) => {
     await axios
       .post("http://52.66.198.155/api/v1/image/delete", { tag })
       .then(() =>
-        setData((prevState) => ({
-          ...prevState,
-          ocimage: null,
-        }))
+        // setData((prevState) => ({
+        //   ...prevState,
+        //   ocimage: null,
+        // }))
+        dispatch(getAllProperty({ name: "ocimage",data: null}))
       );
   };
   const deleteImagecc = async (tag) => {
@@ -44,10 +55,11 @@ const Legal = ({ setData, data }) => {
     await axios
       .post("http://52.66.198.155/api/v1/image/delete", { tag })
       .then(() =>
-        setData((prevState) => ({
-          ...prevState,
-          ccimage: null,
-        }))
+        // setData((prevState) => ({
+        //   ...prevState,
+        //   ccimage: null,
+        // }))
+        dispatch(getAllProperty({ name: "ccimage",data: null}))
       );
   };
   const deleteImagekh = async (tag) => {
@@ -56,10 +68,11 @@ const Legal = ({ setData, data }) => {
     await axios
       .post("http://52.66.198.155/api/v1/image/delete", { tag })
       .then(() =>
-        setData((prevState) => ({
-          ...prevState,
-          khataimage: null,
-        }))
+        // setData((prevState) => ({
+        //   ...prevState,
+        //   khataimage: null,
+        // }))
+        dispatch(getAllProperty({ name: "khataimage",data: null}))
       );
   };
   const deleteImagere = async (tag) => {
@@ -68,10 +81,11 @@ const Legal = ({ setData, data }) => {
     await axios
       .post("http://52.66.198.155/api/v1/image/delete", { tag })
       .then(() =>
-        setData((prevState) => ({
-          ...prevState,
-          reraimage: null,
-        }))
+        // setData((prevState) => ({
+        //   ...prevState,
+        //   reraimage: null,
+        // }))
+        dispatch(getAllProperty({ name: "reraimage",data: null}))
       );
   };
 

@@ -1,15 +1,31 @@
 import axios from "axios";
-import React, { useState } from "react";
-import { v4 as uuid } from "uuid";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import plus from "../../Assest/download__21_-removebg-preview 1.png";
+import { floorPlan, removeFloorPlan } from "../../feature/floorSlice/floorSlice";
+import { getAllProperty } from "../../feature/propertySlice/propertySlice";
+
 import "../Style/Style.css";
 
-const Plan = ({ setAllDatas,setData, allDatas, handleDelete,handleDeletes, data }) => {
+const Plan = () => {
+
+    // code with redux
+    const dispatch = useDispatch();
+    const {floor} = useSelector((state) => state.floor);
+    const data = useSelector((state) => state.property);
+
+    // code with local state
+    const [floorData, setFloorData] = useState({
+      floortype: "",
+      typeofbhk: "",
+      space: "",
+      spacetype: "",
+      pricepersqft: 0,
+      totalprice: 0,
+      floorimage: "",
+    })
   const [inputs, setInputs] = useState([]);
   const [input, setInput] = useState([]);
-  const unique_id = uuid();
-
-  
 
   const numFormatter = (num) => {
     if (num > 999 && num < 100000) {
@@ -40,10 +56,10 @@ const Plan = ({ setAllDatas,setData, allDatas, handleDelete,handleDeletes, data 
     // }
   };
   const handleChange = (e) => {
-    setInputs((prevState) => ({
+    // dispatch(floorPlan({ name: e.target.name,data: e.target.value}))
+    setFloorData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
-    
   }));
   };
   // useEffect(() => {
@@ -57,10 +73,10 @@ const Plan = ({ setAllDatas,setData, allDatas, handleDelete,handleDeletes, data 
     const file = e.target.files[0];
     const formData = new FormData();
     formData.append("image",file);
-    console.log(file);
+
 
   const result =   await axios.post("http://52.66.198.155/api/v1/image/upload", formData)
-      console.log("this is image response ",result?.data?.imgUrl)
+      
       setInputs((prevState) => ({
         ...prevState,
         [e.target.name]: result.data.imgUrl,
@@ -83,20 +99,55 @@ const Plan = ({ setAllDatas,setData, allDatas, handleDelete,handleDeletes, data 
   //   }));
   // };
 
-
-
+  const getFloorPlanId = async (flrs) => {
+    let res = [];
+    for (let val of flrs) {
+      let floorFormData = new FormData();
+      for (let k in val) {
+        // console.log(k,floorData[k]);
+        floorFormData.append(k, val[k]);
+      }
+      let r = await axios
+        .post(
+          "http://52.66.198.155/api/v1/project/add/floorplan",
+          floorFormData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        )
+        .then((res) => res.data.floorplan._id)
+        .catch((err) => "");
+      res.push(r);
+    }
+    console.log(res);
+    return res;
+  };
+  const FloorId = async() => {
+    let s = await getFloorPlanId(floor);
+    dispatch(getAllProperty({ name: "floorplan",data: s}))
+  }
+useEffect(() => {
+  FloorId();
+}, [floor])
   const handleBasicInfo = async (e) => {
     e.preventDefault();
-   setAllDatas([...allDatas, inputs]);
+    //  let s = await getFloorPlanId(floor);
+    //  console.log("s",s);
 
-  
+ dispatch(floorPlan(floorData))
+    
+    // setFloorData(floorDatas);
+    // setFloorData((prevFloorData) => [...prevFloorData, floor[0]]);
+  //  setAllDatas([...allDatas, inputs]);
     // setData((prevState) => ({
     //   ...prevState,
     //   floorplan: allDatas,
     // }));
     
   };
-// data?.floorplan.map(flr => console.log(flr))
+
   return (
     <div className="px-12 pt-16 pb-12">
       <form onSubmit={handleBasicInfo}>
@@ -235,7 +286,8 @@ const Plan = ({ setAllDatas,setData, allDatas, handleDelete,handleDeletes, data 
           </thead>
           <tbody>
             {
-              data?.floorplan?.length > 0 ? <>{data?.floorplan?.map((item, index) => (
+              // data?.floorplan?.length > 0 ? <>{data?.floorplan?.map((item, index) => (
+                floor.length > 0 ? <>{floor?.map((item, index) => (
                 <tr key={index}>
                   <th>{index + 1}</th>
                   <td>{item?.typeofbhk}</td>
@@ -256,7 +308,8 @@ const Plan = ({ setAllDatas,setData, allDatas, handleDelete,handleDeletes, data 
                       </button>)
                     } */}
                     <button
-                        onClick={() => handleDeletes(item?._id)}
+                        // onClick={() => handleDeletes(item?._id)}
+                        onClick={() => dispatch(removeFloorPlan(index))}
                         className="btn btn-xs btn-secondary"
                       >
                         Remove
@@ -265,7 +318,7 @@ const Plan = ({ setAllDatas,setData, allDatas, handleDelete,handleDeletes, data 
                   </td>
                 </tr>
               ))}</> : <>
-              {allDatas?.map((item, index) => (
+              {floor?.map((item, index) => (
               <tr key={index}>
                 <th>{index + 1}</th>
                 <td>{item?.typeofbhk}</td>
@@ -286,7 +339,7 @@ const Plan = ({ setAllDatas,setData, allDatas, handleDelete,handleDeletes, data 
                     </button>)
                   } */}
                   <button
-                      onClick={() => handleDeletes(index)}
+                      // onClick={() => handleDeletes(index)}
                       className="btn btn-xs btn-secondary"
                     >
                       Remove

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import MyMapComponent from "../MyMapComponent/MyMapComponent";
 
-import Select from 'react-select';
+import { useDispatch, useSelector } from "react-redux";
+import { getAllProperty } from "../../feature/propertySlice/propertySlice";
 import { amenties } from "./DataList";
 import { MultiSelectAmen } from "./MultiSelectAmen";
 
@@ -13,11 +14,16 @@ import { MultiSelectAmen } from "./MultiSelectAmen";
 // https://i.postimg.cc/nznSMV2w/Group-47444.png
 // https://i.postimg.cc/nhQPPPMT/Group-47445.png
 
-const Amenties = ({ setData, data }) => {
+const Amenties = () => {
+
+    // code with redux
+    const dispatch = useDispatch();
+    const data = useSelector((state) => state.property);
+    console.log("fdghdfgh",data);
+  
+    // code with local state
   const [lati, setLangi] = useState();
   const [longi, setLongi] = useState();
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const projectamenities = selectedOptions?.map((select) => select.value);
     // let amen = amenties?.map((op) => op?.value?.split("name:")?.[1]);
     let amen = amenties?.map((op) => op?.value);
     // let amenit = data?.projectamenities?.map(pr => pr?.split("name:")?.[1]);
@@ -29,69 +35,31 @@ const Amenties = ({ setData, data }) => {
         setAmen(amenit)
     }, [])
 
-    useEffect(() => {
-      if (data?.projectconfiguration?.length > 1) {
-        setData((prevState) => ({
-          ...prevState,
-          projectamenities:amens
-        }));
-      }
-    }, []);
-console.log(data);
   const handleChange = (e) => {
-    setData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
+    dispatch(getAllProperty({ name: e.target.name,data: e.target.value}))
+   
   };
   useEffect(() => {
-    if(data?._id){
-      setData((prevState) => ({
-        ...prevState,
-        projectamenities: amens,
-        projectlatitude: lati,
-        projectlongitude: longi,
-      }));
-    }else{
-      setData((prevState) => ({
-        ...prevState,
-        projectlatitude: lati,
-        projectlongitude: longi,
-        projectamenities:projectamenities
-      }))
-    }
+    dispatch(getAllProperty({ name: "projectlatitude",data: lati}))
+    dispatch(getAllProperty({ name: "projectlongitude",data: longi}))
    
-  }, [lati, longi,selectedOptions]);
+  }, [lati, longi]);
 
-  function handleSelect(data) {
-    setSelectedOptions(data);
-  }
 
   const handleAmenties = (e) => {
     e.preventDefault();
   };
 
 
-
-  // console.log(data?.projectamenities?.map(pr => pr?.split("name:")?.[1]));
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setAmen(data?.data?.projectamenities?.map(pr => pr?.split("name:")?.[1]));
-  //   }, 2000);
-  // }, []);
-
   useEffect(() => {
-    setData((prevState) => ({
-      ...prevState,
-      projectamenities: amens,
-    }));
+    dispatch(getAllProperty({ name:"projectamenities" ,data:amens }))
   }, [amens]);
 
 
   return (
     <form onSubmit={handleAmenties} className="px-12 mt-16 pb-12">
      
-      {
+      {/* {
         data?._id ?  <MultiSelectAmen
         multiple
         options={amen}
@@ -109,7 +77,14 @@ console.log(data);
         isSearchable={true}
         isMulti
       />
-      }
+      } */}
+      <MultiSelectAmen
+        multiple
+        options={amen}
+        value={amens}
+        name="projectamenities"
+        onChange={(o) => setAmen(o)}
+      />
 
      
       <h2 className="mt-16 text-[#4B4B4B] text-lg">Location Advantages</h2>

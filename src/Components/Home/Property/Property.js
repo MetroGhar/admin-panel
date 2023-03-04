@@ -1,6 +1,5 @@
 import { Pagination } from "@mui/material";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 import eyeBig from "../../../Assest/download__13_-removebg-preview 3.png";
 import eyeSmall from "../../../Assest/download__13_-removebg-preview 6.png";
@@ -9,92 +8,30 @@ import deleted from "../../../Assest/icons8-remove-96 1.png";
 import home from "../../../Assest/property/Home_duotone.png";
 import exlogo from "../../../Assest/property/Vector (4).png";
 import select from "../../../Assest/vvb.png";
+import { useApprovedApiMutation } from "../../../feature/api/apiEndPoint/approvedApi";
+import { useDeletePropertyApiMutation } from "../../../feature/api/apiEndPoint/deletePropertyApi";
+
+import { useGetPropertyDataQuery } from "../../../feature/api/apiEndPoint/getPropertyData";
+
 import "../../Style/Style.css";
 import Bulk from "./Bulk";
 import PropertyModal from "./PropertyModal";
 
 const Property = () => {
-  const [allData, setAllData] = useState([]);
-
-  const [tableDatas, setTableDatas] = useState([]);
-  const [pendingData, setPendingData] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [dataPerPage, setDataPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
+  // redux state
+
+  const { isLoading, isError, error, data } = useGetPropertyDataQuery({
+    currentPage,
+    dataPerPage,
+  });
+  const [deleteProperty] = useDeletePropertyApiMutation();
+  const [statutsAproved] = useApprovedApiMutation();
+  // local state
   const [checkData, setCheckData] = useState([]);
 
-  useEffect(() => {
-    getData();
-  }, [currentPage, dataPerPage]);
-  const getData = () => {
-    setLoading(true);
-    axios
-      .get(
-        `http://52.66.198.155/api/v1/admin/projects?page=${currentPage}&limit=${dataPerPage}`
-      )
-      .then((res) => {
-        setTableDatas(res.data.Projects);
-      })
-      .catch((err) => {
-        setLoading(true);
-      });
-    setLoading(false);
-  };
-
-  const [length, setLength] = useState();
-  const [count, setCount] = useState();
-  const [allDatas, setAllDatas] = useState();
   const [handleProperty, setHandleProperty] = useState("All");
-  let filterData = tableDatas?.filter((item) =>
-    handleProperty === "All" ? item : item.adminapproved === handleProperty
-  );
-  useEffect(() => {
-    setLength(count?.totalResult);
-    setAllDatas(count?.All);
-  }, [count]);
-
-  useEffect(() => {
-    setLoading(true);
-    axios.get(`http://52.66.198.155/api/v1/admin/projects`).then((res) => {
-      setCount(res.data);
-
-      setLoading(false);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (allData.length) {
-      setTableDatas(allData);
-    }
-  }, [allData]);
-
-  const handleApproved = () => {
-    // checkData.map((id) => {
-    //   const confirm = window.confirm("Are you sure?");
-    // if (confirm) {
-    //   axios
-    //     .get(`http://52.66.198.155/api/v1/admin/approve/project/${}`, {
-    //       method: "GET",
-    //       body: JSON.stringify({
-    //         ids: id,
-    //         actionType: "Approved",
-    //       }),
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Accept: "application/json",
-    //       },
-    //     })
-    //     .then((res) => {
-    //       getData();
-    //       console.log(res);
-    //     });
-    // }
-    // });
-  };
-
-  const handleCancel = () => {
-    console.log("hi");
-  };
 
   const handleChange = (e, p) => {
     setCurrentPage(p);
@@ -104,101 +41,110 @@ const Property = () => {
     setDataPerPage(parseInt(event.target.value));
   };
 
-  const handleDeleteData = (id) => {
+  const handleDeleteData = async (id) => {
     const confirm = window.confirm("Are you sure?");
     if (confirm) {
-      axios
-        .delete(`http://52.66.198.155/api/v1/admin/project/${id}`)
-        .then((response) => {
-          toast.success(
-            "Your selected property has been deleted successfully",
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            }
-          );
-          getData();
-        })
-        .catch((error) => {
-          toast.warn("Opps! try again", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+      const result = await deleteProperty(id);
+      if (result?.data?.success) {
+        toast.success("Your selected property has been deleted successfully", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
         });
+      } else {
+        toast.warn("Opps! try again", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
     }
+    // if (confirm) {
+    //   axios
+    //     .delete(`http://52.66.198.155/api/v1/admin/project/${id}`)
+    //     .then((response) => {
+    //       toast.success(
+    //         "Your selected property has been deleted successfully",
+    //         {
+    //           position: "top-right",
+    //           autoClose: 5000,
+    //           hideProgressBar: false,
+    //           closeOnClick: true,
+    //           pauseOnHover: true,
+    //           draggable: true,
+    //           progress: undefined,
+    //           theme: "light",
+    //         }
+    //       );
+    //       // getData();
+    //     })
+    //     .catch((error) => {
+    //       toast.warn("Opps! try again", {
+    //         position: "top-right",
+    //         autoClose: 5000,
+    //         hideProgressBar: false,
+    //         closeOnClick: true,
+    //         pauseOnHover: true,
+    //         draggable: true,
+    //         progress: undefined,
+    //         theme: "light",
+    //       });
+    //     });
+    // }
   };
-  let testData = tableDatas?.find(items => items?._id == "63a9633575adc950e5b8f839")
-console.log("testData",testData);
   const [saveData, setSaveData] = useState({});
   const handleEdit = (data) => {
     setSaveData(data);
   };
-  console.log(checkData);
+
   const handleCheck = (id) => {
     setCheckData([...checkData, id]);
   };
 
-  const pending = tableDatas?.filter((item) => !item.adminapproved);
-  console.log(pending);
-
-  const handleStatus = (id) => {
+  const handleStatus = async (id) => {
     const confirm = window.confirm("Are you sure?");
     if (confirm) {
-      axios
-        .put(`http://52.66.198.155/api/v1/admin/approve/project/${id}`)
-        .then((res) => {
-          getData();
-          console.log(res?.data?.project);
-          if (res?.data?.project?.adminapproved === true) {
-            toast.success("Your selected property successfully approved", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-          } else {
-            toast.success("Your selected property successfully disabled", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-          }
-          console.log(res.data.status === 200);
-        });
+   let res = await statutsAproved(id);
+   if (res?.data?.project?.adminapproved === true) {
+    toast.success("Your selected property successfully approved", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  } else {
+    toast.success("Your selected property successfully disabled", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  }
     }
   };
-  const newArray = [];
-
-  for (let i = 1; i <= length; i++) {
-    newArray.push(i);
-  }
-const reversed = [...tableDatas].reverse();
 
   return (
     <div className="py-16 px-12">
-      <Bulk setAllData={setAllData} />
-      <PropertyModal saveData={saveData} allData={allData} />
+      <Bulk />
+      <PropertyModal saveData={saveData} />
       <div className="flex justify-between items-center rounded-2xl  px-4 py-2">
         <div className="flex gap-x-4">
           <div
@@ -210,7 +156,7 @@ const reversed = [...tableDatas].reverse();
             } px-3 w-40 py-2  cursor-pointer rounded-lg`}
           >
             <p className="text-sm">All Property</p>
-            {count?.All}{" "}
+            {data?.All}{" "}
           </div>
           <div
             onClick={() => setHandleProperty(true)}
@@ -221,7 +167,7 @@ const reversed = [...tableDatas].reverse();
             } px-3  cursor-pointer w-40 py-2 rounded-lg`}
           >
             <p className="text-sm">Approved Property</p>
-            {count?.Approved}{" "}
+            {data?.Approved}
           </div>
           <div
             onClick={() => setHandleProperty(false)}
@@ -232,7 +178,7 @@ const reversed = [...tableDatas].reverse();
             } cursor-pointer px-3 w-40 py-2 rounded-lg`}
           >
             <p className="text-sm">Pending Property</p>
-            {count?.Pending}{" "}
+            {data?.Pending}
           </div>
           {/* <h2>Approved({count?.Approved})</h2>
           <h2>Pending({count?.Pending})</h2> */}
@@ -354,7 +300,7 @@ const reversed = [...tableDatas].reverse();
           </div>
         </div>
 
-        {loading ? (
+        {isLoading ? (
           <div class="lds-roller">
             <div></div>
             <div></div>
@@ -369,9 +315,7 @@ const reversed = [...tableDatas].reverse();
           <table className="rounded-none mt-6 w-full">
             <thead className="w-full bg-[#EDEDED] h-12">
               <tr className="text-center text-sm font-semibold w-full ">
-                <th className="">
-                 
-                </th>
+                <th className=""></th>
                 <th>Id </th>
                 <th>Property Name</th>
                 <th>Property Type</th>
@@ -386,97 +330,98 @@ const reversed = [...tableDatas].reverse();
               </tr>
             </thead>
 
-            {reversed
-              ?.filter((item) =>
-                handleProperty === "All"
-                  ? item
-                  : item.adminapproved === handleProperty
-              )
-              ?.map((table, index) => (
-                <tbody className="w-full hover:bg-[#E7F9FC] cursor-pointer" key={index}>
-                  <tr className="text-sm h-16 w-full text-center hover border-b-2">
-                    <td className="px-2">
-                      <div key={table._id} className="product">
-                        <div
-                          onClick={() => handleCheck(table._id)}
-                          className={`productInput ${table._id && "active"}`}
-                        >
-                          <input className="" type="checkbox" id={table._id} />
-                          {checkData.map(
-                            (c) =>
-                              c === table._id && (
-                                <>
-                                  <div className="productInputBefore"></div>
-                                  <div className="productInputAfter">
-                                    <img src={select} alt="" />
-                                  </div>
-                                </>
-                              )
-                          )}
-                        </div>
-                      </div>
-                    </td>
-
-                    <td className="">
-                      {"#P" +
-                        (((currentPage < 2 && "0000") ||
-                          (currentPage > 1 && "000") ||
-                          (currentPage > 10 && "00") ||
-                          (currentPage > 20 && "0")) +
-                          (currentPage - 1) +
-                          index)}
-                    </td>
-                    <td>{table?.projectname}</td>
-                    <td>{table?.projectsubtype}</td>
-
-                    <td>{table?.buildername}</td>
-                    <td>{table?.updatedAt.slice(0, 10)}</td>
-
-                    <td>
-                      {" "}
-                      <button
-                        onClick={() => handleStatus(table._id)}
-                        className={`bg-[#4EC615] ${
-                          table?.adminapproved === false ? "bg-[#FFD700]" : ""
-                        } p-1 px-2 rounded-lg text-[#000000]`}
+            {data?.Projects?.filter((item) =>
+              handleProperty === "All"
+                ? item
+                : item.adminapproved === handleProperty
+            )?.map((table, index) => (
+              <tbody
+                className="w-full hover:bg-[#E7F9FC] cursor-pointer"
+                key={index}
+              >
+                <tr className="text-sm h-16 w-full text-center hover border-b-2">
+                  <td className="px-2">
+                    <div key={table._id} className="product">
+                      <div
+                        onClick={() => handleCheck(table._id)}
+                        className={`productInput ${table._id && "active"}`}
                       >
-                        {table.adminapproved === true ? "Approved" : "Pending"}
-                      </button>{" "}
-                    </td>
-                    <td>{table?.noofviews}</td>
-
-                    <td className="">
-                      <div className="flex justify-center items-center">
-                        <button className="cursor-pointer w-full">
-                          <label
-                            onClick={() => handleEdit(table)}
-                            htmlFor="my-modal-3"
-                            className="cursor-pointer"
-                          >
-                            <img src={pencil} alt="" />
-                          </label>
-                        </button>
-
-                        <button className=" w-full">
-                          <img className="w-full" src={eyeSmall} alt="" />
-                        </button>
-                        <button
-                          className="w-full"
-                          onClick={() => handleDeleteData(table?._id)}
-                        >
-                          <img src={deleted} alt="" />
-                        </button>
+                        <input className="" type="checkbox" id={table._id} />
+                        {checkData.map(
+                          (c) =>
+                            c === table._id && (
+                              <>
+                                <div className="productInputBefore"></div>
+                                <div className="productInputAfter">
+                                  <img src={select} alt="" />
+                                </div>
+                              </>
+                            )
+                        )}
                       </div>
-                    </td>
-                  </tr>
-                </tbody>
-              ))}
+                    </div>
+                  </td>
+
+                  <td className="">
+                    {"#P" +
+                      (((currentPage < 2 && "0000") ||
+                        (currentPage > 1 && "000") ||
+                        (currentPage > 10 && "00") ||
+                        (currentPage > 20 && "0")) +
+                        (currentPage - 1) +
+                        index)}
+                  </td>
+                  <td>{table?.projectname}</td>
+                  <td>{table?.projectsubtype}</td>
+
+                  <td>{table?.buildername}</td>
+                  <td>{table?.updatedAt.slice(0, 10)}</td>
+
+                  <td>
+                    {" "}
+                    <button
+                      onClick={() => handleStatus(table._id)}
+                      className={`bg-[#4EC615] ${
+                        table?.adminapproved === false ? "bg-[#FFD700]" : ""
+                      } p-1 px-2 rounded-lg text-[#000000]`}
+                    >
+                      {table.adminapproved === true ? "Approved" : "Pending"}
+                    </button>{" "}
+                  </td>
+                  <td>{table?.noofviews}</td>
+
+                  <td className="">
+                    <div className="flex justify-center items-center">
+                      <button className="cursor-pointer w-full">
+                        <label
+                          onClick={() => handleEdit(table)}
+                          htmlFor="my-modal-3"
+                          className="cursor-pointer"
+                        >
+                          <img src={pencil} alt="" />
+                        </label>
+                      </button>
+
+                      <button className=" w-full">
+                        <img className="w-full" src={eyeSmall} alt="" />
+                      </button>
+                      <button
+                        className="w-full"
+                        onClick={() => handleDeleteData(table?._id)}
+                      >
+                        <img src={deleted} alt="" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            ))}
           </table>
         )}
 
         <div className="mx-auto flex justify-center mt-4">
           <Pagination
-            count={Math.ceil(length / dataPerPage)}
+            count={Math.ceil(data?.totalResult / dataPerPage)}
             // count={20}
             page={currentPage}
             onChange={handleChange}

@@ -1,15 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import cancel from "../../Assest/icons8-cancel-64 2.png";
 const Project = ({
-  setData,
-  data,
 }) => {
 
-  const [extImg,setExtImg] = useState([])
-  const [intImg,setIntImg] = useState([])
-  const [amentImg,setAmentImg] = useState([])
-  const [otherImg,setOtherImg] = useState([])
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.property);
   const [loading, setLoading] = useState(false)
   
 const [images,setImages] = useState("");
@@ -29,11 +26,11 @@ const [images,setImages] = useState("");
           console.log("this is the response delete",result.data)
          const img =  data.externalimages.filter((val) => val !== tag)
          console.log("this is new array ",img)
-         setData((prevState) => ({
-           ...prevState,
+        //  setData((prevState) => ({
+        //    ...prevState,
            
-           externalimages: img
-          }))
+        //    externalimages: img
+        //   }))
         }
     }
     const deleteAmentImage = async(tag)=>{
@@ -48,10 +45,10 @@ const [images,setImages] = useState("");
           console.log("this is the response delete",result.data)
          const img =  data.amenitiesimages.filter((val) => val !== tag)
          console.log("this is new array ",img)
-         setData((prevState) => ({
-           ...prevState,
-           amenitiesimages: img
-          }))
+        //  setData((prevState) => ({
+        //    ...prevState,
+        //    amenitiesimages: img
+        //   }))
         }
     }
 
@@ -67,10 +64,10 @@ const [images,setImages] = useState("");
           console.log("this is the response delete",result.data)
          const img =  data.internalimages.filter((val) => val !== tag)
          console.log("this is new array ",img)
-         setData((prevState) => ({
-           ...prevState,
-           internalimages: img
-          }))
+        //  setData((prevState) => ({
+        //    ...prevState,
+        //    internalimages: img
+        //   }))
         }
     }
     const deleteOtherImage = async(tag)=>{
@@ -85,10 +82,10 @@ const [images,setImages] = useState("");
           console.log("this is the response delete",result.data)
          const img =  data.othersimages.filter((val) => val !== tag)
          console.log("this is new array ",img)
-         setData((prevState) => ({
-           ...prevState,
-           othersimages: img
-          }))
+        //  setData((prevState) => ({
+        //    ...prevState,
+        //    othersimages: img
+        //   }))
         }
     }
 
@@ -135,22 +132,21 @@ const [images,setImages] = useState("");
           }
           setLoading(true);
           const newData = await axios.post("http://52.66.198.155/api/v1/multipleimage/upload",formData,config);
-
-          console.log(newData?.data?.imgUrls);
           
           if(newData){
             setLoading(false)
           }
+          // dispatch(getAllProperty({ name: "externalimages",data: newData?.data?.imgUrls}))
           if(data?.externalimages?.length > 0){
-            setData((prevState) => ({
-              ...prevState,
-              externalimages: [...data?.externalimages,...newData?.data?.imgUrls],
-            }))
+            // setData((prevState) => ({
+            //   ...prevState,
+            //   externalimages: [...data?.externalimages,...newData?.data?.imgUrls],
+            // }))
           }else{
-            setData((prevState) => ({
-              ...prevState,
-              externalimages: [...newData?.data?.imgUrls],
-            }))
+            // setData((prevState) => ({
+            //   ...prevState,
+            //   externalimages: [...newData?.data?.imgUrls],
+            // }))
           }
          
         } catch (error) {
@@ -210,15 +206,15 @@ const [img1, setImg1] = useState("")
           setLoading(false)
         }
         if(data?.internalimages?.length > 0){
-          setData((prevState) => ({
-            ...prevState,
-            internalimages: [...data?.internalimages,...newData?.data?.imgUrls],
-          }))
+          // setData((prevState) => ({
+          //   ...prevState,
+          //   internalimages: [...data?.internalimages,...newData?.data?.imgUrls],
+          // }))
         }else{
-          setData((prevState) => ({
-            ...prevState,
-            internalimages: [...newData?.data?.imgUrls],
-          }))
+          // setData((prevState) => ({
+          //   ...prevState,
+          //   internalimages: [...newData?.data?.imgUrls],
+          // }))
         }
        
       } catch (error) {
@@ -273,15 +269,15 @@ const [img1, setImg1] = useState("")
         setLoading(false)
       }
       if(data?.amenitiesimages?.length > 0){
-        setData((prevState) => ({
-          ...prevState,
-          amenitiesimages: [...data?.amenitiesimages,...newData?.data?.imgUrls],
-        }))
+        // setData((prevState) => ({
+        //   ...prevState,
+        //   amenitiesimages: [...data?.amenitiesimages,...newData?.data?.imgUrls],
+        // }))
       }else{
-        setData((prevState) => ({
-          ...prevState,
-          amenitiesimages: [...newData?.data?.imgUrls],
-        }))
+        // setData((prevState) => ({
+        //   ...prevState,
+        //   amenitiesimages: [...newData?.data?.imgUrls],
+        // }))
       }
      
     } catch (error) {
@@ -319,15 +315,15 @@ const [img1, setImg1] = useState("")
         setLoading(false)
       }
       if(data?.othersimages?.length > 0){
-        setData((prevState) => ({
-          ...prevState,
-          othersimages: [...data?.othersimages,...newData?.data?.imgUrls],
-        }))
+        // setData((prevState) => ({
+        //   ...prevState,
+        //   othersimages: [...data?.othersimages,...newData?.data?.imgUrls],
+        // }))
       }else{
-        setData((prevState) => ({
-          ...prevState,
-          othersimages: [...newData?.data?.imgUrls],
-        }))
+        // setData((prevState) => ({
+        //   ...prevState,
+        //   othersimages: [...newData?.data?.imgUrls],
+        // }))
       }
      
     } catch (error) {

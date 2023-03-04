@@ -8,8 +8,6 @@ import "../Style//Style.css";
 
 const CareerModal = (props) => {
   const [careerResponse, setCareerResponse] = useState();
-
-
   useEffect(() => {
     axios
       .get(`http://52.66.198.155/api/v1/admin/application/${props.careerId}`)
@@ -20,14 +18,12 @@ const CareerModal = (props) => {
       props.onClose();
     }
   };
-console.log(careerResponse);
   useEffect(() => {
     document.body.addEventListener("keydown", closeOnEscapeKeyDown);
     return function cleanup() {
       document.body.removeEventListener("keydown", closeOnEscapeKeyDown);
     };
   }, []);
-console.log(props.careerId);
 
 const onButtonClick = (pdfLink) => {
   fetch("sample.pdf").then(response => {
