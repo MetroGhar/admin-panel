@@ -4,33 +4,30 @@ import { useDispatch, useSelector } from "react-redux";
 import cancel from "../../Assest/icons8-cancel-64 2.png";
 import { getAllProperty } from "../../feature/propertySlice/propertySlice";
 const Legal = () => {
+  // code with redux
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.property);
 
-    // code with redux
-    const dispatch = useDispatch();
-    const data = useSelector((state) => state.property);
-  
-  
-  
-    // code with local state
+  // code with local state
   const uploadImage = async (e) => {
     const file = e.target.files[0];
     const formData = new FormData();
-    formData.append("image",file);
+    formData.append("image", file);
 
-  const result =   await axios.post("http://52.66.198.155/api/v1/image/upload", formData)
-      console.log("this is image response ",result.data.imgUrl)
-      // setData((prevState) => ({
-      //   ...prevState,
-      //   [e.target.name]: result.data.imgUrl,
-      // }))
-      dispatch(getAllProperty({ name: e.target.name,data: result.data.imgUrl}))
-    
+    const result = await axios.post(
+      "http://13.127.219.251/api/v1/image/upload",
+      formData
+    );
+    console.log("this is image response ", result.data.imgUrl);
+    // setData((prevState) => ({
+    //   ...prevState,
+    //   [e.target.name]: result.data.imgUrl,
+    // }))
+    dispatch(getAllProperty({ name: e.target.name, data: result.data.imgUrl }));
   };
   const handleChange = (e) => {
-    dispatch(getAllProperty({ name: e.target.name,data: e.target.value}))
-    
+    dispatch(getAllProperty({ name: e.target.name, data: e.target.value }));
   };
-
 
   const handleLegal = (e) => {
     e.preventDefault();
@@ -40,55 +37,54 @@ const Legal = () => {
     console.log("tag", tag);
 
     await axios
-      .post("http://52.66.198.155/api/v1/image/delete", { tag })
+      .post("http://13.127.219.251/api/v1/image/delete", { tag })
       .then(() =>
         // setData((prevState) => ({
         //   ...prevState,
         //   ocimage: null,
         // }))
-        dispatch(getAllProperty({ name: "ocimage",data: null}))
+        dispatch(getAllProperty({ name: "ocimage", data: null }))
       );
   };
   const deleteImagecc = async (tag) => {
     console.log("tag", tag);
 
     await axios
-      .post("http://52.66.198.155/api/v1/image/delete", { tag })
+      .post("http://13.127.219.251/api/v1/image/delete", { tag })
       .then(() =>
         // setData((prevState) => ({
         //   ...prevState,
         //   ccimage: null,
         // }))
-        dispatch(getAllProperty({ name: "ccimage",data: null}))
+        dispatch(getAllProperty({ name: "ccimage", data: null }))
       );
   };
   const deleteImagekh = async (tag) => {
     console.log("tag", tag);
 
     await axios
-      .post("http://52.66.198.155/api/v1/image/delete", { tag })
+      .post("http://13.127.219.251/api/v1/image/delete", { tag })
       .then(() =>
         // setData((prevState) => ({
         //   ...prevState,
         //   khataimage: null,
         // }))
-        dispatch(getAllProperty({ name: "khataimage",data: null}))
+        dispatch(getAllProperty({ name: "khataimage", data: null }))
       );
   };
   const deleteImagere = async (tag) => {
     console.log("tag", tag);
 
     await axios
-      .post("http://52.66.198.155/api/v1/image/delete", { tag })
+      .post("http://13.127.219.251/api/v1/image/delete", { tag })
       .then(() =>
         // setData((prevState) => ({
         //   ...prevState,
         //   reraimage: null,
         // }))
-        dispatch(getAllProperty({ name: "reraimage",data: null}))
+        dispatch(getAllProperty({ name: "reraimage", data: null }))
       );
   };
-
 
   return (
     <div className="mt-12 px-12 pb-12">
@@ -99,9 +95,15 @@ const Legal = () => {
             onChange={handleChange}
             className="border-b-2 w-full text-slate-400  border-slate-300 py-2 pr-3 focus:outline-none focus:border-gray-500 focus:ring-0 "
           >
-            <option disabled selected>Occupancy Certificate (OC)</option>
-            <option selected={data?.projectoc === "yes"}  value="yes">Yes</option>
-            <option selected={data?.projectoc === "no"} value="no">No</option>
+            <option disabled selected>
+              Occupancy Certificate (OC)
+            </option>
+            <option selected={data?.projectoc === "yes"} value="yes">
+              Yes
+            </option>
+            <option selected={data?.projectoc === "no"} value="no">
+              No
+            </option>
           </select>
 
           <div className=" border p-2 w-full">
@@ -148,9 +150,13 @@ const Legal = () => {
             <option disabled selected>
               Occupancy Certificate (CC)
             </option>
-            <option selected={data?.projectcc === "yes"} value="yes">Yes</option>
+            <option selected={data?.projectcc === "yes"} value="yes">
+              Yes
+            </option>
 
-            <option selected={data?.projectcc === "no"} value="no">No</option>
+            <option selected={data?.projectcc === "no"} value="no">
+              No
+            </option>
           </select>
 
           <div className=" border p-2 w-full">
@@ -199,8 +205,12 @@ const Legal = () => {
                 Khata Type
               </option>
 
-              <option  selected={data?.khatatype === "A Khata"} value="A Khata">A Khata</option>
-              <option selected={data?.khatatype === "E Khata"} value="E Khata">E Khata</option>
+              <option selected={data?.khatatype === "A Khata"} value="A Khata">
+                A Khata
+              </option>
+              <option selected={data?.khatatype === "E Khata"} value="E Khata">
+                E Khata
+              </option>
             </select>
             <input
               name="khatano"
@@ -259,8 +269,12 @@ const Legal = () => {
               <option disabled selected>
                 RERA Approved
               </option>
-              <option selected={data?.reraapproved === "yes"} value="yes">Yes</option>
-              <option selected={data?.reraapproved === "no"} value="no">No</option>
+              <option selected={data?.reraapproved === "yes"} value="yes">
+                Yes
+              </option>
+              <option selected={data?.reraapproved === "no"} value="no">
+                No
+              </option>
             </select>
             <input
               name="reraauthority"
@@ -298,20 +312,4 @@ const Legal = () => {
                   accept=".doc,.docx,.pdf"
                   className="block w-full text-sm text-slate-500
       file:mr-4 file:py-2 file:px-4
-      file:rounded-none file:border-0
-      file:text-sm file:font-semibold
-      file:bg-violet-50
-      hover:file:bg-violet-100
-    "
-                />
-              )}
-            </label>
-          </div>
-        </div>
-       
-      </from>
-    </div>
-  );
-};
-
-export default Legal;
+      file:rounded-none fil

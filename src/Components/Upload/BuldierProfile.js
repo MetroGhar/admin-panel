@@ -5,58 +5,53 @@ import cancel from "../../Assest/icons8-cancel-64 2.png";
 import camera from "../../Assest/Subtract1.png";
 import { getAllProperty } from "../../feature/propertySlice/propertySlice";
 
-const BuldierProfile = ({handleSubmit }) => {
-    // code with redux
-    const dispatch = useDispatch();
-    const data = useSelector((state) => state.property);
-  
-  
-  
-    // code with local state
+const BuldierProfile = ({ handleSubmit }) => {
+  // code with redux
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.property);
+
+  // code with local state
   const handleChange = (e) => {
-    dispatch(getAllProperty({ name: e.target.name,data: e.target.value}))
+    dispatch(getAllProperty({ name: e.target.name, data: e.target.value }));
   };
 
-  const uploadImage = async(e)=>{
-        const file = e.target.files[0];
-        const formData = new FormData();
-        formData.append("image",file);
-        console.log("this is image",formData);
-    
-  await fetch("http://52.66.198.155/api/v1/image/upload", {
+  const uploadImage = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("image", file);
+    console.log("this is image", formData);
+
+    await fetch("http://13.127.219.251/api/v1/image/upload", {
       method: "POST",
       // headers: {
       //   "Content-Type": "multipart/form-data",
       // },
       body: formData,
     })
-      .then((res) => res.json(
-
-      ))
-      .then((data) => 
-      //   setData((prevState) => ({
-      //   ...prevState,
-      //   builderimage: data.imgUrl,
-      // }
-      // ))
-      dispatch(getAllProperty({ name: "builderimage",data: data?.imgUrl}))
+      .then((res) => res.json())
+      .then((data) =>
+        //   setData((prevState) => ({
+        //   ...prevState,
+        //   builderimage: data.imgUrl,
+        // }
+        // ))
+        dispatch(getAllProperty({ name: "builderimage", data: data?.imgUrl }))
       );
-   console.log("this is full project data",data)
-  }
-  const deleteImage = async(tag)=>{
-      
-    console.log("hello",tag)
-    await axios.post("http://52.66.198.155/api/v1/image/delete",{tag})
-      .then(() => 
-      //   setData((prevState) => ({
-      //   ...prevState,
-      //   builderimage: null,
-      // }
-      // ))
-      dispatch(getAllProperty({ name: "builderimage",data: ""}))
+    console.log("this is full project data", data);
+  };
+  const deleteImage = async (tag) => {
+    console.log("hello", tag);
+    await axios
+      .post("http://13.127.219.251/api/v1/image/delete", { tag })
+      .then(() =>
+        //   setData((prevState) => ({
+        //   ...prevState,
+        //   builderimage: null,
+        // }
+        // ))
+        dispatch(getAllProperty({ name: "builderimage", data: "" }))
       );
-   
-  }
+  };
 
   return (
     <div className="px-12 mt-14 pb-12">
@@ -103,19 +98,28 @@ const BuldierProfile = ({handleSubmit }) => {
             <div className="w-24 rounded-full ">
               <img src={data?.builderimage} alt="" />
             </div>
-            { data?.builderimage ? ""
-            :
-            <input
-            hidden
-            onChange={uploadImage}
-            name="builderimage"
-            type="file"
-            id="imageUser"
-            />
-          }
+            {data?.builderimage ? (
+              ""
+            ) : (
+              <input
+                hidden
+                onChange={uploadImage}
+                name="builderimage"
+                type="file"
+                id="imageUser"
+              />
+            )}
             <label htmlFor="imageUser" className="w-6  h-6 cursor-pointer">
-              { data?.builderimage ?  <img className="img-fluid" onClick={()=>deleteImage(data?.builderimage)} src={cancel} alt="" /> :
-              <img className="img-fluid"  src={camera} alt="" /> }
+              {data?.builderimage ? (
+                <img
+                  className="img-fluid"
+                  onClick={() => deleteImage(data?.builderimage)}
+                  src={cancel}
+                  alt=""
+                />
+              ) : (
+                <img className="img-fluid" src={camera} alt="" />
+              )}
             </label>
           </div>
         </div>
@@ -160,15 +164,4 @@ const BuldierProfile = ({handleSubmit }) => {
           className=" placeholder:text-slate-400 block w-full border-b-2 border-slate-300 py-2 pr-3 focus:outline-none focus:border-gray-500 focus:ring-0 sm:text-sm mt-8"
           type="text"
           name="builderdescription"
-          defaultValue={data?.builderdescription || ""}
-          placeholder="Descriptions"
-          onChange={handleChange}
-        />
-
-       
-      </form>
-    </div>
-  );
-};
-
-export default BuldierProfile;
+          defaultValue={data?.
