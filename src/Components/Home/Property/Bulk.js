@@ -4,7 +4,6 @@ import "../../Style/Style.css";
 const axios = require("axios");
 
 const Bulk = () => {
-
   const [csv, setCsv] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -21,13 +20,13 @@ const Bulk = () => {
       };
       setLoading(true);
       const data = await axios.post(
-        "http://52.66.198.155/api/v1/project/bulkupload",
+        "http://13.127.219.251/api/v1/project/bulkupload",
         formData,
         config
       );
       if (data.status === 200) {
         setLoading(false);
-        toast.success('Successfully your property data saved', {
+        toast.success("Successfully your property data saved", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -36,7 +35,7 @@ const Bulk = () => {
           draggable: true,
           progress: undefined,
           theme: "light",
-          });
+        });
         console.log({
           open: true,
           message: "instand succseessfull",
@@ -56,7 +55,7 @@ const Bulk = () => {
         draggable: true,
         progress: undefined,
         theme: "light",
-        });
+      });
     }
   };
 
@@ -75,7 +74,6 @@ const Bulk = () => {
             </label>
           </div>
 
-        
           {loading ? (
             <p className="py-8 text-center text-green-500">Please waite...</p>
           ) : (
@@ -100,11 +98,8 @@ const Bulk = () => {
               </button>
             </form>
           )}
-
-         
         </div>
       </div>
-     
     </div>
   );
 };

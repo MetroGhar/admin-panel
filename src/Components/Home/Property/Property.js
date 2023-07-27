@@ -71,7 +71,7 @@ const Property = () => {
     }
     // if (confirm) {
     //   axios
-    //     .delete(`http://52.66.198.155/api/v1/admin/project/${id}`)
+    //     .delete(`http://13.127.219.251/api/v1/admin/project/${id}`)
     //     .then((response) => {
     //       toast.success(
     //         "Your selected property has been deleted successfully",
@@ -114,30 +114,30 @@ const Property = () => {
   const handleStatus = async (id) => {
     const confirm = window.confirm("Are you sure?");
     if (confirm) {
-   let res = await statutsAproved(id);
-   if (res?.data?.project?.adminapproved === true) {
-    toast.success("Your selected property successfully approved", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  } else {
-    toast.success("Your selected property successfully disabled", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  }
+      let res = await statutsAproved(id);
+      if (res?.data?.project?.adminapproved === true) {
+        toast.success("Your selected property successfully approved", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      } else {
+        toast.success("Your selected property successfully disabled", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
     }
   };
 

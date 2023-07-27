@@ -6,17 +6,18 @@ import eyeSmall from "../../Assest/download__13_-removebg-preview 6.png";
 import pencil from "../../Assest/icons8-pencil-96 1.png";
 import deleted from "../../Assest/icons8-remove-96 1.png";
 import person from "../../Assest/navbar/user-square.png";
-import { useDeleteCareerDataMutation, useGetCareerDataQuery } from "../../feature/api/apiEndPoint/careerApi";
+import {
+  useDeleteCareerDataMutation,
+  useGetCareerDataQuery,
+} from "../../feature/api/apiEndPoint/careerApi";
 import "../Style/Style.css";
 
 const CareerManage = () => {
-
   // redux state
 
-  const {isLoading, data} = useGetCareerDataQuery();
-  const [deleteCareer] = useDeleteCareerDataMutation()
+  const { isLoading, data } = useGetCareerDataQuery();
+  const [deleteCareer] = useDeleteCareerDataMutation();
   // local state
-
 
   const [dataPerPage, setDataPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,33 +35,32 @@ const CareerManage = () => {
   const [toggle, setToggle] = useState(false);
   const handleDeleteData = async (delId) => {
     // axios
-    //   .delete(`http://52.66.198.155/api/v1/admin/job/delete/${delId}`)
+    //   .delete(`http://13.127.219.251/api/v1/admin/job/delete/${delId}`)
     //   .then((res) => {
-      const result = await deleteCareer({delId})
-        if (result?.data?.success === true) {
-          toast.success("Your selected job has been deactivated successfully", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        } else {
-          toast.warn("Opps! try again", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        }
-      
+    const result = await deleteCareer({ delId });
+    if (result?.data?.success === true) {
+      toast.success("Your selected job has been deactivated successfully", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      toast.warn("Opps! try again", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
   return (
     <div className="py-16 px-12">
@@ -74,35 +74,68 @@ const CareerManage = () => {
           >
             <p className="text-sm">All</p> {data?.data?.length}
           </div>
-          <div  onClick={() => setFilterData("BusinessDevelop")}
+          <div
+            onClick={() => setFilterData("BusinessDevelop")}
             className={`shadow-lg ${
               filterData === "BusinessDevelop" ? "border-2 border-primary" : ""
-            } px-3 w-full py-2 cursor-pointer rounded-lg`}>
-            <p className="text-sm"><span className="flex gap-x-2"> Business <span> Development</span> </span></p> {(data?.data?.filter((itm) => itm?.jobCategory === "BusinessDevelop")?.length)}
+            } px-3 w-full py-2 cursor-pointer rounded-lg`}
+          >
+            <p className="text-sm">
+              <span className="flex gap-x-2">
+                {" "}
+                Business <span> Development</span>{" "}
+              </span>
+            </p>{" "}
+            {
+              data?.data?.filter(
+                (itm) => itm?.jobCategory === "BusinessDevelop"
+              )?.length
+            }
           </div>
-          <div  onClick={() => setFilterData("Marketing")}
+          <div
+            onClick={() => setFilterData("Marketing")}
             className={`shadow-lg ${
               filterData === "Marketing" ? "border-2 border-primary" : ""
-            } px-3 w-full py-2 cursor-pointer rounded-lg`}>
-            <p className="text-sm">Marketing</p> {(data?.data?.filter((itm) => itm?.jobCategory === "Marketing")?.length)}
+            } px-3 w-full py-2 cursor-pointer rounded-lg`}
+          >
+            <p className="text-sm">Marketing</p>{" "}
+            {
+              data?.data?.filter((itm) => itm?.jobCategory === "Marketing")
+                ?.length
+            }
           </div>
-          <div  onClick={() => setFilterData("TechDesign")}
+          <div
+            onClick={() => setFilterData("TechDesign")}
             className={`shadow-lg ${
               filterData === "TechDesign" ? "border-2 border-primary" : ""
-            } px-3 w-full py-2 cursor-pointer rounded-lg`}>
-            <p className="text-sm">Tech & Design</p> {(data?.data?.filter((itm) => itm?.jobCategory === "TechDesign")?.length)}
+            } px-3 w-full py-2 cursor-pointer rounded-lg`}
+          >
+            <p className="text-sm">Tech & Design</p>{" "}
+            {
+              data?.data?.filter((itm) => itm?.jobCategory === "TechDesign")
+                ?.length
+            }
           </div>
-          <div onClick={() => setFilterData("Operation")}
+          <div
+            onClick={() => setFilterData("Operation")}
             className={`shadow-lg ${
               filterData === "Operation" ? "border-2 border-primary" : ""
-            } px-3 w-full py-2 cursor-pointer rounded-lg`}>
-            <p className="text-sm">Operation</p> {(data?.data?.filter((itm) => itm?.jobCategory === "Operation")?.length)}
+            } px-3 w-full py-2 cursor-pointer rounded-lg`}
+          >
+            <p className="text-sm">Operation</p>{" "}
+            {
+              data?.data?.filter((itm) => itm?.jobCategory === "Operation")
+                ?.length
+            }
           </div>
-          <div onClick={() => setFilterData("Others")}
+          <div
+            onClick={() => setFilterData("Others")}
             className={`shadow-lg ${
               filterData === "Others" ? "border-2 border-primary" : ""
-            } px-3 w-full py-2 cursor-pointer rounded-lg`}>
-            <p className="text-sm">Others</p> {(data?.data?.filter((itm) => itm?.jobCategory === "Others")?.length)}
+            } px-3 w-full py-2 cursor-pointer rounded-lg`}
+          >
+            <p className="text-sm">Others</p>{" "}
+            {data?.data?.filter((itm) => itm?.jobCategory === "Others")?.length}
           </div>
         </div>
         <div className="cursor-pointer flex justify-center items-center">
@@ -123,7 +156,6 @@ const CareerManage = () => {
             placeholder="Search"
             className="border p-2 rounded-lg input-bordered w-xl"
           />
-       
         </div>
         <div className="mb-8 flex justify-between items-center px-4">
           <div className="flex justify-start gap-x-2 items-center">
@@ -201,16 +233,19 @@ const CareerManage = () => {
                 <th>Action</th>
               </tr>
             </thead>
-            {data?.data?.filter((item) =>
-                filterData === "All"
-                  ? item
-                  : item.jobCategory === filterData
-              )?.map((table, index) => (
-              <tbody className="w-full hover:bg-[#E7F9FC] cursor-pointer" key={index}>
-                <tr className="text-sm h-16 w-full text-center hover border-b-2">
-                  <td className="px-2">
-                    <div key={index} className="product">
-                      {/* <div
+            {data?.data
+              ?.filter((item) =>
+                filterData === "All" ? item : item.jobCategory === filterData
+              )
+              ?.map((table, index) => (
+                <tbody
+                  className="w-full hover:bg-[#E7F9FC] cursor-pointer"
+                  key={index}
+                >
+                  <tr className="text-sm h-16 w-full text-center hover border-b-2">
+                    <td className="px-2">
+                      <div key={index} className="product">
+                        {/* <div
                       checked={checked}
 
                       className={`productInput ${table.id && "active"}`}
@@ -239,7 +274,7 @@ const CareerManage = () => {
                         </>
                       )}
                     </div> */}
-                      {/* <input
+                        {/* <input
                       type="checkbox"
                       id={index}
                       name={table?.id}
@@ -248,64 +283,66 @@ const CareerManage = () => {
                       onChange={() => handleOnChange(index)}
                     /> */}
 
-                      {/* <label htmlFor={table.id}>{table.search}</label> */}
-                    </div>
-                  </td>
-                  <td className="">
-                    {"#J" +
-                      (((currentPage < 2 && "0") ||
-                        (currentPage > 1 && "0") ||
-                        (currentPage > 10 && "0") ||
-                        (currentPage > 20 && "0")) +
-                        (currentPage - 1) +
-                        index)}
-                  </td>
-                  <td>{table?.jobTitle}</td>
-                  <td>{table?.location}</td>
-                  <td>{table?.experience}</td>
-                  <td>{table?.workType}</td>
-                  <td>{table?.compensation}</td>
+                        {/* <label htmlFor={table.id}>{table.search}</label> */}
+                      </div>
+                    </td>
+                    <td className="">
+                      {"#J" +
+                        (((currentPage < 2 && "0") ||
+                          (currentPage > 1 && "0") ||
+                          (currentPage > 10 && "0") ||
+                          (currentPage > 20 && "0")) +
+                          (currentPage - 1) +
+                          index)}
+                    </td>
+                    <td>{table?.jobTitle}</td>
+                    <td>{table?.location}</td>
+                    <td>{table?.experience}</td>
+                    <td>{table?.workType}</td>
+                    <td>{table?.compensation}</td>
 
-                  <td>
-                    {" "}
-                    <button
-                      className={`bg-[#4EC615] ${
-                        table?.isDeleted === true ? "bg-[#FFD700]" : ""
-                      } p-1 px-2 rounded-lg text-[#000000]`}
-                    >
-                      {table?.isDeleted === true ? "Inactive" : "Active"}
-                    </button>{" "}
-                  </td>
+                    <td>
+                      {" "}
+                      <button
+                        className={`bg-[#4EC615] ${
+                          table?.isDeleted === true ? "bg-[#FFD700]" : ""
+                        } p-1 px-2 rounded-lg text-[#000000]`}
+                      >
+                        {table?.isDeleted === true ? "Inactive" : "Active"}
+                      </button>{" "}
+                    </td>
 
-                  <td className="">
-                    <div className="flex justify-center items-center">
-                      <button className="cursor-pointer w-full">
-                        <label
-                          onClick={() => navigate(`careerupdate/${table?._id}`)}
-                          // htmlFor="my-modal-3"
-                          className="cursor-pointer"
+                    <td className="">
+                      <div className="flex justify-center items-center">
+                        <button className="cursor-pointer w-full">
+                          <label
+                            onClick={() =>
+                              navigate(`careerupdate/${table?._id}`)
+                            }
+                            // htmlFor="my-modal-3"
+                            className="cursor-pointer"
+                          >
+                            <img src={pencil} alt="" />
+                          </label>
+                        </button>
+
+                        <button
+                          onClick={() => navigate(`careerview/${table._id}`)}
+                          className=" w-full"
                         >
-                          <img src={pencil} alt="" />
-                        </label>
-                      </button>
-
-                      <button
-                        onClick={() => navigate(`careerview/${table._id}`)}
-                        className=" w-full"
-                      >
-                        <img className="w-full" src={eyeSmall} alt="" />
-                      </button>
-                      <button
-                        className="w-full"
-                        onClick={() => handleDeleteData(table?._id)}
-                      >
-                        <img src={deleted} alt="" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            ))}
+                          <img className="w-full" src={eyeSmall} alt="" />
+                        </button>
+                        <button
+                          className="w-full"
+                          onClick={() => handleDeleteData(table?._id)}
+                        >
+                          <img src={deleted} alt="" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              ))}
           </table>
         )}
 

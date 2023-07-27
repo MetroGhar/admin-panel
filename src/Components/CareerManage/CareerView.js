@@ -10,20 +10,22 @@ const CareerView = () => {
   const [careerData, setCareerData] = useState([]);
   const [careerResponse, setCareerResponse] = useState([]);
 
-
   useEffect(() => {
     axios
-      .get(`http://52.66.198.155/api/v1/admin/job/${careerview}`)
+      .get(`http://13.127.219.251/api/v1/admin/job/${careerview}`)
       .then((res) => setCareerData(res?.data?.data));
   }, []);
   useEffect(() => {
     axios
-      .get(`http://52.66.198.155/api/v1/admin/application/list`)
-      .then((res) => { 
+      .get(`http://13.127.219.251/api/v1/admin/application/list`)
+      .then((res) => {
         const idVerify = res?.data?.appliedJob;
-    
-        const verifyData = idVerify?.filter(idv => idv?.jobId?._id === careerview)
-        setCareerResponse(verifyData)});
+
+        const verifyData = idVerify?.filter(
+          (idv) => idv?.jobId?._id === careerview
+        );
+        setCareerResponse(verifyData);
+      });
   }, []);
 
   return (
@@ -59,14 +61,16 @@ const CareerView = () => {
           </div>
           <div className="div">
             <p className="text-[15px] text-black">Compensation</p>
-            <p className="text-[16px] text-[#6B6B6B]">{careerData?.compensation}</p>
+            <p className="text-[16px] text-[#6B6B6B]">
+              {careerData?.compensation}
+            </p>
           </div>
         </div>
 
         <div className="mt-10">
           <p className="text-lg text-black">Key Resposibilities</p>
           <p className="text-sm mt-2 text-[#6B6B6B]">
-          {careerData?.skillRequirement}
+            {careerData?.skillRequirement}
           </p>
         </div>
 
@@ -88,56 +92,63 @@ const CareerView = () => {
         <div className="mt-10">
           <p className="text-lg text-black">Additional Information</p>
           <p className="text-sm mt-2  text-[#6B6B6B]">
-           {careerData?.additionalInfo}
+            {careerData?.additionalInfo}
           </p>
         </div>
       </div>
 
-        {
-          careerResponse?.length > 0 && <> 
+      {careerResponse?.length > 0 && (
+        <>
           <p className="py-2 w-48 mt-8 rounded-lg flex justify-center mx-auto  bg-[#E6ECFF]">
-        Recieve Response
-      </p>
+            Recieve Response
+          </p>
 
-      <div className="overflow-x-auto mt-8">
-        <table className="table w-full bg-[#EDEDED6E]">
-          <thead>
-            <tr>
-              <th>Sr. No.</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Phone Number</th>
-              <th>Date</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          {
-            careerResponse?.map((carRes, index) => <tbody key={index}>
-              <tr>
-                <th>{index + 1}</th>
-                <td>{carRes?.firstName} {carRes?.lastName}</td>
-                <td>{carRes?.email}</td>
-                <td>{carRes?.phone}</td>
-                <td>{carRes?.createdAt?.slice(0, 15)}</td>
-                <td>Rejected</td>
-               <td >
-                
-                <button onClick={() => setShowCareer(true)} className="px-4 py-1 bg-primary text-white rounded-md cursor-pointer" >View</button>
-                <CareerModal careerId={carRes?._id} onClose={() => setShowCareer(false)} showCareer={showCareer}><p>This is modal body</p></CareerModal>
-               
-                </td>
-
-                
-              </tr>
-            </tbody>)
-          }
-          
-        </table>
-      </div>
-           </>
-        }    
-     
+          <div className="overflow-x-auto mt-8">
+            <table className="table w-full bg-[#EDEDED6E]">
+              <thead>
+                <tr>
+                  <th>Sr. No.</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone Number</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              {careerResponse?.map((carRes, index) => (
+                <tbody key={index}>
+                  <tr>
+                    <th>{index + 1}</th>
+                    <td>
+                      {carRes?.firstName} {carRes?.lastName}
+                    </td>
+                    <td>{carRes?.email}</td>
+                    <td>{carRes?.phone}</td>
+                    <td>{carRes?.createdAt?.slice(0, 15)}</td>
+                    <td>Rejected</td>
+                    <td>
+                      <button
+                        onClick={() => setShowCareer(true)}
+                        className="px-4 py-1 bg-primary text-white rounded-md cursor-pointer"
+                      >
+                        View
+                      </button>
+                      <CareerModal
+                        careerId={carRes?._id}
+                        onClose={() => setShowCareer(false)}
+                        showCareer={showCareer}
+                      >
+                        <p>This is modal body</p>
+                      </CareerModal>
+                    </td>
+                  </tr>
+                </tbody>
+              ))}
+            </table>
+          </div>
+        </>
+      )}
     </div>
   );
 };

@@ -17,7 +17,7 @@ const Permission = () => {
     setLoading(true);
     axios
       .get(
-        `http://52.66.198.155/api/v1/allproject?page=${currentPage}&limit=${dataPerPage}`
+        `http://13.127.219.251/api/v1/allproject?page=${currentPage}&limit=${dataPerPage}`
       )
       .then((res) => {
         setTableDatas(res.data.Projects);
@@ -28,7 +28,7 @@ const Permission = () => {
 
   useEffect(() => {
     setLoading(true);
-    axios.get(`http://52.66.198.155/api/v1/projects`).then((res) => {
+    axios.get(`http://13.127.219.251/api/v1/projects`).then((res) => {
       setLength(res.data.totalcountProject);
 
       setLoading(false);
@@ -47,11 +47,16 @@ const Permission = () => {
   return (
     <div className="py-16 px-12">
       <div className="flex justify-between items-center rounded-2xl  border-gray-200 py-2 px-2">
-      <div className="flex justify-center items-center w-full gap-x-4 ">
-        <div className="shadow-lg px-3 w-full py-2 rounded-lg"><p className="text-sm">All Employee</p> f</div>
-        <div className="shadow-lg px-3 w-full py-2 rounded-lg"><p className="text-sm">Active Employee</p> f</div>
-        <div className="shadow-lg px-3 w-full py-2 rounded-lg"><p className="text-sm">Inactive Employee</p> f</div>
-        
+        <div className="flex justify-center items-center w-full gap-x-4 ">
+          <div className="shadow-lg px-3 w-full py-2 rounded-lg">
+            <p className="text-sm">All Employee</p> f
+          </div>
+          <div className="shadow-lg px-3 w-full py-2 rounded-lg">
+            <p className="text-sm">Active Employee</p> f
+          </div>
+          <div className="shadow-lg px-3 w-full py-2 rounded-lg">
+            <p className="text-sm">Inactive Employee</p> f
+          </div>
         </div>
         <div className="cursor-pointer w-full flex justify-end items-center">
           {/* <img className=" img-fluid" src={lead} alt="" /> */}
@@ -118,7 +123,16 @@ const Permission = () => {
         </div> */}
 
         {loading ? (
-          <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          <div class="lds-roller">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
         ) : (
           <table className="rounded-none mt-16 w-full">
             <thead className="w-full">

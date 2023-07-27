@@ -20,7 +20,7 @@ const User = () => {
 
   useEffect(() => {
     setLoading(true);
-    axios.get(`http://52.66.198.155/api/v1/admin/allusers`).then((res) => {
+    axios.get(`http://13.127.219.251/api/v1/admin/allusers`).then((res) => {
       setTableDatas(res?.data?.Users);
       setUserLength(res.data?.Users?.filter((itm) => itm?.role === "user"));
       setBuilderLength(
@@ -33,7 +33,7 @@ const User = () => {
 
   useEffect(() => {
     setLoading(true);
-    axios.get(`http://52.66.198.155/api/v1/admin/allusers`).then((res) => {
+    axios.get(`http://13.127.219.251/api/v1/admin/allusers`).then((res) => {
       setLength(res?.data?.TotalResult);
 
       setLoading(false);
@@ -182,12 +182,16 @@ const User = () => {
                 <th>Action</th>
               </tr>
             </thead>
-            {[...tableDatas].reverse()
+            {[...tableDatas]
+              .reverse()
               ?.filter((item) =>
                 filterData === "All" ? item : item.role === filterData
               )
               ?.map((table, index) => (
-                <tbody className="w-full hover:bg-[#E7F9FC] cursor-pointer" key={index}>
+                <tbody
+                  className="w-full hover:bg-[#E7F9FC] cursor-pointer"
+                  key={index}
+                >
                   <tr className="text-sm h-16 w-full text-center hover border-b-2">
                     <td className="px-2">
                       <div key={index} className="product">

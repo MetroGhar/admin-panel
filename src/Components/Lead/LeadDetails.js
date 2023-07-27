@@ -26,7 +26,7 @@ const LeadDetails = () => {
   const [colorSet, setColor] = useState(data?.lead?.status);
 
   useEffect(() => {
-        setColor(data?.lead?.status);
+    setColor(data?.lead?.status);
   }, [data]);
   const handleAllStatus = (name) => {
     if (allStatus.length <= 5) {
@@ -34,7 +34,7 @@ const LeadDetails = () => {
     }
     setColor(name);
     axios
-      .put(`http://52.66.198.155/api/v1/admin/lead/${addlead}`, {
+      .put(`http://13.127.219.251/api/v1/admin/lead/${addlead}`, {
         status: name,
       })
       .then((res) => console.log(res?.data));
@@ -143,7 +143,7 @@ const LeadDetails = () => {
                     onClick={() => setToggle(!toggle)}
                     className="border py-1 w-full px-4"
                   >
-                    { colorSet || "Processing"}
+                    {colorSet || "Processing"}
                   </button>
                   {toggle ? (
                     <div className=" flex flex-col gap-0 mt-9 bg-gray-200 p-1 absolute">
@@ -153,28 +153,21 @@ const LeadDetails = () => {
                         // onClick={() => setTellyCalling(!tellyCalling)}
                         onClick={() => handleAllStatus("TellyCalling")}
                       >
-                        <span>
-                        Telly
-                        </span> Calling
+                        <span>Telly</span> Calling
                       </button>
                       <button
                         className="bg-white w-full justify-center flex gap-x-2 hover:text-yellow-700 mt-1"
                         // onClick={() => setSiteVisit(!siteVisit)}
                         onClick={() => handleAllStatus("SiteVisit")}
                       >
-                        <span>
-                        Site 
-                        </span>Visit
+                        <span>Site</span>Visit
                       </button>
                       <button
                         className="bg-white w-full flex justify-center gap-x-2 hover:text-yellow-700 mt-1"
                         // onClick={() => handleCancel()}
                         onClick={() => handleAllStatus("SalesTeam")}
                       >
-                         
-                        <span>
-                        Sales 
-                        </span>Team
+                        <span>Sales</span>Team
                       </button>
                       <button
                         className="bg-white hover:text-yellow-700 mt-1"

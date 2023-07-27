@@ -312,4 +312,19 @@ const Legal = () => {
                   accept=".doc,.docx,.pdf"
                   className="block w-full text-sm text-slate-500
       file:mr-4 file:py-2 file:px-4
-      file:rounded-none fil
+      file:rounded-none file:border-0
+      file:text-sm file:font-semibold
+      file:bg-violet-50
+      hover:file:bg-violet-100
+    "
+                />
+              )}
+            </label>
+          </div>
+        </div>
+      </from>
+    </div>
+  );
+};
+
+export default Legal;
