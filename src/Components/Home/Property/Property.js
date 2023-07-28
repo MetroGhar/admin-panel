@@ -71,7 +71,7 @@ const Property = () => {
     }
     // if (confirm) {
     //   axios
-    //     .delete(`http://13.127.219.251/api/v1/admin/project/${id}`)
+    //     .delete(`http://13.127.219.251/backend/backend/api/v1/admin/project/${id}`)
     //     .then((response) => {
     //       toast.success(
     //         "Your selected property has been deleted successfully",

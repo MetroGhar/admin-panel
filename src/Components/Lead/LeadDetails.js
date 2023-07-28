@@ -34,7 +34,7 @@ const LeadDetails = () => {
     }
     setColor(name);
     axios
-      .put(`http://13.127.219.251/api/v1/admin/lead/${addlead}`, {
+      .put(`http://13.127.219.251/backend/backend/api/v1/admin/lead/${addlead}`, {
         status: name,
       })
       .then((res) => console.log(res?.data));

@@ -21,7 +21,7 @@ const BuldierProfile = ({ handleSubmit }) => {
     formData.append("image", file);
     console.log("this is image", formData);
 
-    await fetch("http://13.127.219.251/api/v1/image/upload", {
+    await fetch("http://13.127.219.251/backend/backend/api/v1/image/upload", {
       method: "POST",
       // headers: {
       //   "Content-Type": "multipart/form-data",
@@ -42,7 +42,7 @@ const BuldierProfile = ({ handleSubmit }) => {
   const deleteImage = async (tag) => {
     console.log("hello", tag);
     await axios
-      .post("http://13.127.219.251/api/v1/image/delete", { tag })
+      .post("http://13.127.219.251/backend/backend/api/v1/image/delete", { tag })
       .then(() =>
         //   setData((prevState) => ({
         //   ...prevState,

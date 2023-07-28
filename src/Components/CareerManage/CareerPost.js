@@ -41,51 +41,49 @@ const CareerPost = () => {
   console.log("career data set", careerData);
   const [status, setStatus] = useState(false);
   const handlePost = () => {
-    setStatus(!status)
-    handlePostCareer()
-  }
+    setStatus(!status);
+    handlePostCareer();
+  };
   const handlePostCareer = async () => {
- 
-      const result = await axios.post(
-        "http://52.66.198.155/api/v1/admin/job/add",
-        {
-          additionalInfo: careerData?.additional,
-          location: careerData?.careerlocation,
-          compensation: careerData?.compensation,
-          startDate: careerData?.date,
-          experience: careerData?.experience,
-          jobTitle: careerData?.jobrole,
-          workType: careerData?.jobtype,
-          description: careerData?.keyres,
-          otherRequirement: careerData?.others,
-          jobCategory: careerData?.skills,
-          skillRequirement: tags,
-        }
-      );
-      if (result.status === 200) {
-        toast.success("successfully career data add", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      } else {
-        toast.warn("Opps! try again", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+    const result = await axios.post(
+      "http://13.127.219.251/backend/backend/api/v1/admin/job/add",
+      {
+        additionalInfo: careerData?.additional,
+        location: careerData?.careerlocation,
+        compensation: careerData?.compensation,
+        startDate: careerData?.date,
+        experience: careerData?.experience,
+        jobTitle: careerData?.jobrole,
+        workType: careerData?.jobtype,
+        description: careerData?.keyres,
+        otherRequirement: careerData?.others,
+        jobCategory: careerData?.skills,
+        skillRequirement: tags,
       }
-    
+    );
+    if (result.status === 200) {
+      toast.success("successfully career data add", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      toast.warn("Opps! try again", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   return (

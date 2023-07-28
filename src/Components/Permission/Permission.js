@@ -17,7 +17,7 @@ const Permission = () => {
     setLoading(true);
     axios
       .get(
-        `http://13.127.219.251/api/v1/allproject?page=${currentPage}&limit=${dataPerPage}`
+        `http://13.127.219.251/backend/backend/api/v1/allproject?page=${currentPage}&limit=${dataPerPage}`
       )
       .then((res) => {
         setTableDatas(res.data.Projects);
@@ -28,7 +28,7 @@ const Permission = () => {
 
   useEffect(() => {
     setLoading(true);
-    axios.get(`http://13.127.219.251/api/v1/projects`).then((res) => {
+    axios.get(`http://13.127.219.251/backend/backend/api/v1/projects`).then((res) => {
       setLength(res.data.totalcountProject);
 
       setLoading(false);

@@ -15,7 +15,7 @@ const Legal = () => {
     formData.append("image", file);
 
     const result = await axios.post(
-      "http://13.127.219.251/api/v1/image/upload",
+      "http://13.127.219.251/backend/backend/api/v1/image/upload",
       formData
     );
     console.log("this is image response ", result.data.imgUrl);
@@ -37,7 +37,7 @@ const Legal = () => {
     console.log("tag", tag);
 
     await axios
-      .post("http://13.127.219.251/api/v1/image/delete", { tag })
+      .post("http://13.127.219.251/backend/backend/api/v1/image/delete", { tag })
       .then(() =>
         // setData((prevState) => ({
         //   ...prevState,
@@ -50,7 +50,7 @@ const Legal = () => {
     console.log("tag", tag);
 
     await axios
-      .post("http://13.127.219.251/api/v1/image/delete", { tag })
+      .post("http://13.127.219.251/backend/backend/api/v1/image/delete", { tag })
       .then(() =>
         // setData((prevState) => ({
         //   ...prevState,
@@ -63,7 +63,7 @@ const Legal = () => {
     console.log("tag", tag);
 
     await axios
-      .post("http://13.127.219.251/api/v1/image/delete", { tag })
+      .post("http://13.127.219.251/backend/backend/api/v1/image/delete", { tag })
       .then(() =>
         // setData((prevState) => ({
         //   ...prevState,
@@ -76,7 +76,7 @@ const Legal = () => {
     console.log("tag", tag);
 
     await axios
-      .post("http://13.127.219.251/api/v1/image/delete", { tag })
+      .post("http://13.127.219.251/backend/backend/api/v1/image/delete", { tag })
       .then(() =>
         // setData((prevState) => ({
         //   ...prevState,

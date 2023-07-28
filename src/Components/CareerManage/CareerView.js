@@ -12,12 +12,12 @@ const CareerView = () => {
 
   useEffect(() => {
     axios
-      .get(`http://13.127.219.251/api/v1/admin/job/${careerview}`)
+      .get(`http://13.127.219.251/backend/backend/api/v1/admin/job/${careerview}`)
       .then((res) => setCareerData(res?.data?.data));
   }, []);
   useEffect(() => {
     axios
-      .get(`http://13.127.219.251/api/v1/admin/application/list`)
+      .get(`http://13.127.219.251/backend/backend/api/v1/admin/application/list`)
       .then((res) => {
         const idVerify = res?.data?.appliedJob;
 

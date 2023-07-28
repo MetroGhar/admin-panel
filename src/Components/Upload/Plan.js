@@ -2,28 +2,30 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import plus from "../../Assest/download__21_-removebg-preview 1.png";
-import { floorPlan, removeFloorPlan } from "../../feature/floorSlice/floorSlice";
+import {
+  floorPlan,
+  removeFloorPlan,
+} from "../../feature/floorSlice/floorSlice";
 import { getAllProperty } from "../../feature/propertySlice/propertySlice";
 
 import "../Style/Style.css";
 
 const Plan = () => {
+  // code with redux
+  const dispatch = useDispatch();
+  const { floor } = useSelector((state) => state.floor);
+  const data = useSelector((state) => state.property);
 
-    // code with redux
-    const dispatch = useDispatch();
-    const {floor} = useSelector((state) => state.floor);
-    const data = useSelector((state) => state.property);
-
-    // code with local state
-    const [floorData, setFloorData] = useState({
-      floortype: "",
-      typeofbhk: "",
-      space: "",
-      spacetype: "",
-      pricepersqft: 0,
-      totalprice: 0,
-      floorimage: "",
-    })
+  // code with local state
+  const [floorData, setFloorData] = useState({
+    floortype: "",
+    typeofbhk: "",
+    space: "",
+    spacetype: "",
+    pricepersqft: 0,
+    totalprice: 0,
+    floorimage: "",
+  });
   const [inputs, setInputs] = useState([]);
   const [input, setInput] = useState([]);
 
@@ -60,7 +62,7 @@ const Plan = () => {
     setFloorData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
-  }));
+    }));
   };
   // useEffect(() => {
   //   setData((prevState) => ({
@@ -72,26 +74,27 @@ const Plan = () => {
   const uploadImage = async (e) => {
     const file = e.target.files[0];
     const formData = new FormData();
-    formData.append("image",file);
+    formData.append("image", file);
 
+    const result = await axios.post(
+      "http://13.127.219.251/backend/backend/api/v1/image/upload",
+      formData
+    );
 
-  const result =   await axios.post("http://52.66.198.155/api/v1/image/upload", formData)
-      
-      setInputs((prevState) => ({
-        ...prevState,
-        [e.target.name]: result.data.imgUrl,
-      }))
-    
+    setInputs((prevState) => ({
+      ...prevState,
+      [e.target.name]: result.data.imgUrl,
+    }));
   };
- 
+
   // const uploadImage = async (e) => {
   //   const file = e.target.files[0];
   //   const base64 = await convertBase64Image(file);
 
-    // setInputs((prevState) => ({
-    //   ...prevState,
-    //   floorimage: e.target.files[0],
-    // }));
+  // setInputs((prevState) => ({
+  //   ...prevState,
+  //   floorimage: e.target.files[0],
+  // }));
 
   //   setInput((prevState) => ({
   //     ...prevState,
@@ -109,7 +112,7 @@ const Plan = () => {
       }
       let r = await axios
         .post(
-          "http://52.66.198.155/api/v1/project/add/floorplan",
+          "http://13.127.219.251/backend/backend/api/v1/project/add/floorplan",
           floorFormData,
           {
             headers: {
@@ -124,28 +127,27 @@ const Plan = () => {
     console.log(res);
     return res;
   };
-  const FloorId = async() => {
+  const FloorId = async () => {
     let s = await getFloorPlanId(floor);
-    dispatch(getAllProperty({ name: "floorplan",data: s}))
-  }
-useEffect(() => {
-  FloorId();
-}, [floor])
+    dispatch(getAllProperty({ name: "floorplan", data: s }));
+  };
+  useEffect(() => {
+    FloorId();
+  }, [floor]);
   const handleBasicInfo = async (e) => {
     e.preventDefault();
     //  let s = await getFloorPlanId(floor);
     //  console.log("s",s);
 
- dispatch(floorPlan(floorData))
-    
+    dispatch(floorPlan(floorData));
+
     // setFloorData(floorDatas);
     // setFloorData((prevFloorData) => [...prevFloorData, floor[0]]);
-  //  setAllDatas([...allDatas, inputs]);
+    //  setAllDatas([...allDatas, inputs]);
     // setData((prevState) => ({
     //   ...prevState,
     //   floorplan: allDatas,
     // }));
-    
   };
 
   return (
@@ -213,7 +215,6 @@ useEffect(() => {
         </div>
         <div className="mt-12">
           <div className="flex justify-between gap-x-14">
-           
             <div className="text-lg relative flex justify-between items-center w-full">
               <input
                 className=" placeholder:text-slate-400 block w-full border-b-2 border-slate-300 py-2 pr-3 focus:outline-none focus:border-gray-500 focus:ring-0 sm:text-sm"
@@ -287,19 +288,25 @@ useEffect(() => {
           <tbody>
             {
               // data?.floorplan?.length > 0 ? <>{data?.floorplan?.map((item, index) => (
-                floor.length > 0 ? <>{floor?.map((item, index) => (
-                <tr key={index}>
-                  <th>{index + 1}</th>
-                  <td>{item?.typeofbhk}</td>
-                  <td>{item?.spacetype}</td>
-                  <td>{item?.pricepersqft}</td>
-                  <td>{item?.totalprice}</td>
-                  <td>
-                    {/* {item?.floorimage?.slice(0, 20)} */}
-                  <img className="w-12 h-12" src={item?.floorimage} alt="" />
-                  </td>
-                  <td>
-                    {/* {
+              floor.length > 0 ? (
+                <>
+                  {floor?.map((item, index) => (
+                    <tr key={index}>
+                      <th>{index + 1}</th>
+                      <td>{item?.typeofbhk}</td>
+                      <td>{item?.spacetype}</td>
+                      <td>{item?.pricepersqft}</td>
+                      <td>{item?.totalprice}</td>
+                      <td>
+                        {/* {item?.floorimage?.slice(0, 20)} */}
+                        <img
+                          className="w-12 h-12"
+                          src={item?.floorimage}
+                          alt=""
+                        />
+                      </td>
+                      <td>
+                        {/* {
                       data?.floorplan?.map(flr => <button
                         onClick={() => handleDelete(flr)}
                         className="btn btn-xs btn-secondary"
@@ -307,30 +314,36 @@ useEffect(() => {
                         Remove
                       </button>)
                     } */}
-                    <button
-                        // onClick={() => handleDeletes(item?._id)}
-                        onClick={() => dispatch(removeFloorPlan(index))}
-                        className="btn btn-xs btn-secondary"
-                      >
-                        Remove
-                      </button>
-                    
-                  </td>
-                </tr>
-              ))}</> : <>
-              {floor?.map((item, index) => (
-              <tr key={index}>
-                <th>{index + 1}</th>
-                <td>{item?.typeofbhk}</td>
-                <td>{item?.spacetype}</td>
-                <td>{item?.pricepersqft}</td>
-                <td>{item?.totalprice}</td>
-                <td>
-                  {/* {item?.floorimage?.slice(0, 20)} */}
-                <img className="w-12 h-12" src={item?.floorimage} alt="" />
-                </td>
-                <td>
-                  {/* {
+                        <button
+                          // onClick={() => handleDeletes(item?._id)}
+                          onClick={() => dispatch(removeFloorPlan(index))}
+                          className="btn btn-xs btn-secondary"
+                        >
+                          Remove
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </>
+              ) : (
+                <>
+                  {floor?.map((item, index) => (
+                    <tr key={index}>
+                      <th>{index + 1}</th>
+                      <td>{item?.typeofbhk}</td>
+                      <td>{item?.spacetype}</td>
+                      <td>{item?.pricepersqft}</td>
+                      <td>{item?.totalprice}</td>
+                      <td>
+                        {/* {item?.floorimage?.slice(0, 20)} */}
+                        <img
+                          className="w-12 h-12"
+                          src={item?.floorimage}
+                          alt=""
+                        />
+                      </td>
+                      <td>
+                        {/* {
                     data?.floorplan?.map(flr => <button
                       onClick={() => handleDelete(flr)}
                       className="btn btn-xs btn-secondary"
@@ -338,24 +351,21 @@ useEffect(() => {
                       Remove
                     </button>)
                   } */}
-                  <button
-                      // onClick={() => handleDeletes(index)}
-                      className="btn btn-xs btn-secondary"
-                    >
-                      Remove
-                    </button>
-                  
-                </td>
-              </tr>
-            ))}
-              </>
+                        <button
+                          // onClick={() => handleDeletes(index)}
+                          className="btn btn-xs btn-secondary"
+                        >
+                          Remove
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </>
+              )
             }
-            
           </tbody>
         </table>
       </div>
-
-     
     </div>
   );
 };

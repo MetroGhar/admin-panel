@@ -13,7 +13,7 @@ const CareerUpdate = () => {
   const [careerUp, setCareerUp] = useState();
   useEffect(() => {
     axios
-      .get(`http://13.127.219.251/api/v1/admin/job/${careerupdate}`)
+      .get(`http://13.127.219.251/backend/backend/api/v1/admin/job/${careerupdate}`)
       .then((res) => setCareerUp(res?.data?.data));
   }, []);
   const [startDate, setStartDate] = useState(new Date());
@@ -51,7 +51,7 @@ const CareerUpdate = () => {
   };
   const handlePostCareer = async () => {
     const result = await axios.post(
-      "http://13.127.219.251/api/v1/admin/job/add",
+      "http://13.127.219.251/backend/backend/api/v1/admin/job/add",
       {
         _id: careerupdate,
         additionalInfo: careerUp?.additionalInfo,

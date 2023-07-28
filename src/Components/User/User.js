@@ -20,24 +20,28 @@ const User = () => {
 
   useEffect(() => {
     setLoading(true);
-    axios.get(`http://13.127.219.251/api/v1/admin/allusers`).then((res) => {
-      setTableDatas(res?.data?.Users);
-      setUserLength(res.data?.Users?.filter((itm) => itm?.role === "user"));
-      setBuilderLength(
-        res.data?.Users?.filter((itm) => itm?.role === "builder")
-      );
+    axios
+      .get(`http://13.127.219.251/backend/backend/api/v1/admin/allusers`)
+      .then((res) => {
+        setTableDatas(res?.data?.Users);
+        setUserLength(res.data?.Users?.filter((itm) => itm?.role === "user"));
+        setBuilderLength(
+          res.data?.Users?.filter((itm) => itm?.role === "builder")
+        );
 
-      setLoading(false);
-    });
+        setLoading(false);
+      });
   }, [dataPerPage, currentPage]);
 
   useEffect(() => {
     setLoading(true);
-    axios.get(`http://13.127.219.251/api/v1/admin/allusers`).then((res) => {
-      setLength(res?.data?.TotalResult);
+    axios
+      .get(`http://13.127.219.251/backend/backend/api/v1/admin/allusers`)
+      .then((res) => {
+        setLength(res?.data?.TotalResult);
 
-      setLoading(false);
-    });
+        setLoading(false);
+      });
   }, []);
   console.log(tableDatas);
 

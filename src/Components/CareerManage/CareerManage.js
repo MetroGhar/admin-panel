@@ -35,7 +35,7 @@ const CareerManage = () => {
   const [toggle, setToggle] = useState(false);
   const handleDeleteData = async (delId) => {
     // axios
-    //   .delete(`http://13.127.219.251/api/v1/admin/job/delete/${delId}`)
+    //   .delete(`http://13.127.219.251/backend/backend/api/v1/admin/job/delete/${delId}`)
     //   .then((res) => {
     const result = await deleteCareer({ delId });
     if (result?.data?.success === true) {

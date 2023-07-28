@@ -20,7 +20,7 @@ const Bulk = () => {
       };
       setLoading(true);
       const data = await axios.post(
-        "http://13.127.219.251/api/v1/project/bulkupload",
+        "http://13.127.219.251/backend/backend/api/v1/project/bulkupload",
         formData,
         config
       );

@@ -64,7 +64,7 @@ const PropertyModal = ({ saveData }) => {
     }
     if (postData._id === undefined) {
       // axios
-      //   .post("http://52.66.198.155/api/v1/project/add", formData, {
+      //   .post("http://13.127.219.251/backend/backend/api/v1/project/add", formData, {
       //     headers: {
       //       "Content-Type": "multipart/form-data",
       //     },
@@ -105,7 +105,7 @@ const PropertyModal = ({ saveData }) => {
     if ("data._id" !== undefined) {
       axios
         .put(
-          `http://52.66.198.155/api/v1/admin/project/${"data._id"}`,
+          `http://13.127.219.251/backend/backend/api/v1/admin/project/${"data._id"}`,
           "postData"
         )
         .then((res) => console.log(res.data));
@@ -115,7 +115,7 @@ const PropertyModal = ({ saveData }) => {
   // post property
   const addProject = async (e) => {
     e.preventDefault();
-    // const result =   await axios.post("http://52.66.198.155/api/v1/project/add", {})
+    // const result =   await axios.post("http://13.127.219.251/backend/backend/api/v1/project/add", {})
     console.log(postData);
     const result = await postProperty("postData");
     if (result?.status === 200) {
@@ -146,7 +146,7 @@ const PropertyModal = ({ saveData }) => {
   const handleDelete = (id) => {
     console.log(id);
     axios
-      .delete(`http://52.66.198.155/api/v1/floorplan/${id}`)
+      .delete(`http://13.127.219.251/backend/backend/api/v1/floorplan/${id}`)
       .then((res) => console.log(res?.data));
 
     // const d = data?.floorplan?.filter((item) => item.unique_id !== id);
@@ -155,12 +155,12 @@ const PropertyModal = ({ saveData }) => {
     if ("data?._id") {
       let ids = "data?.floorplan?.[id]";
       axios
-        .delete(`http://52.66.198.155/api/v1/floorplan/${ids._id}`)
+        .delete(`http://13.127.219.251/backend/backend/api/v1/floorplan/${ids._id}`)
         .then((res) => console.log(res?.data));
     } else {
       let ids = "data?.floorplan?.[id]";
       axios
-        .delete(`http://52.66.198.155/api/v1/floorplan/${ids}`)
+        .delete(`http://13.127.219.251/backend/backend/api/v1/floorplan/${ids}`)
         .then((res) => console.log(res?.data));
     }
   };

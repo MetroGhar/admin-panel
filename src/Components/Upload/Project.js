@@ -13,7 +13,7 @@ const Project = ({}) => {
     console.log(tag);
     if (typeof tag == "string") {
       var result = await axios.post(
-        "http://13.127.219.251/api/v1/image/delete",
+        "http://13.127.219.251/backend/backend/api/v1/image/delete",
         { tag }
       );
       console.log("this is single image aray", result);
@@ -35,7 +35,7 @@ const Project = ({}) => {
   const deleteAmentImage = async (tag) => {
     if (typeof tag == "string") {
       var result = await axios.post(
-        "http://13.127.219.251/api/v1/image/delete",
+        "http://13.127.219.251/backend/backend/api/v1/image/delete",
         { tag }
       );
       console.log("this is single image aray", result);
@@ -57,7 +57,7 @@ const Project = ({}) => {
   const deleteIntImage = async (tag) => {
     if (typeof tag == "string") {
       var result = await axios.post(
-        "http://13.127.219.251/api/v1/image/delete",
+        "http://13.127.219.251/backend/backend/api/v1/image/delete",
         { tag }
       );
       console.log("this is single image aray", result);
@@ -78,7 +78,7 @@ const Project = ({}) => {
   const deleteOtherImage = async (tag) => {
     if (typeof tag == "string") {
       var result = await axios.post(
-        "http://13.127.219.251/api/v1/image/delete",
+        "http://13.127.219.251/backend/backend/api/v1/image/delete",
         { tag }
       );
       console.log("this is single image aray", result);
@@ -110,7 +110,7 @@ const Project = ({}) => {
     // console.log(file);
     // const formData = new FormData();
     // formData.append("images",file);
-    // const result =   await axios.post("http://13.127.219.251/api/v1/multipleimage/upload", formData,{
+    // const result =   await axios.post("http://13.127.219.251/backend/backend/api/v1/multipleimage/upload", formData,{
     //   headers: {
     //     "Content-Type": "multipart/form-data",
     //   },
@@ -119,7 +119,7 @@ const Project = ({}) => {
     // console.log(file);
     // const formData = new FormData();
     // formData.append("image", file);
-    // const result =   await axios.post("http://13.127.219.251/api/v1/multipleimage/upload", formData)
+    // const result =   await axios.post("http://13.127.219.251/backend/backend/api/v1/multipleimage/upload", formData)
     // setExtImg([...extImg,result.data.imgUrl])
     //   setData((prevState) => ({
     //     ...prevState,
@@ -139,7 +139,7 @@ const Project = ({}) => {
       };
       setLoading(true);
       const newData = await axios.post(
-        "http://13.127.219.251/api/v1/multipleimage/upload",
+        "http://13.127.219.251/backend/backend/api/v1/multipleimage/upload",
         formData,
         config
       );
@@ -188,7 +188,7 @@ const Project = ({}) => {
     // console.log(file);
     // const formData = new FormData();
     // formData.append("image", file);
-    // const result =   await axios.post("http://13.127.219.251/api/v1/multipleimage/upload", formData)
+    // const result =   await axios.post("http://13.127.219.251/backend/backend/api/v1/multipleimage/upload", formData)
     // setIntImg([...intImg,result.data.imgUrl])
     //   setData((prevState) => ({
     //     ...prevState,
@@ -206,7 +206,7 @@ const Project = ({}) => {
       };
       setLoading(true);
       const newData = await axios.post(
-        "http://13.127.219.251/api/v1/multipleimage/upload",
+        "http://13.127.219.251/backend/backend/api/v1/multipleimage/upload",
         formData,
         config
       );
@@ -237,7 +237,7 @@ const Project = ({}) => {
     //   const file = e.target.files[0];
     //   const formData = new FormData();
     //   formData.append("image", file);
-    //   const result =   await axios.post("http://13.127.219.251/api/v1/multipleimage/upload", formData)
+    //   const result =   await axios.post("http://13.127.219.251/backend/backend/api/v1/multipleimage/upload", formData)
     //   setAmentImg([...amentImg,result.data.imgUrl])
     //     setData((prevState) => ({
     //       ...prevState,
@@ -253,7 +253,7 @@ const Project = ({}) => {
     //     console.log(file[i]);
     //     const formData = new FormData();
     //     formData.append("images", file[i]);
-    //     const result =   await axios.post("http://13.127.219.251/api/v1/multipleimage/upload", formData)
+    //     const result =   await axios.post("http://13.127.219.251/backend/backend/api/v1/multipleimage/upload", formData)
     //     setOtherImg([...otherImg,result.data.imgUrl])
     //       setData((prevState) => ({
     //         ...prevState,
@@ -272,7 +272,7 @@ const Project = ({}) => {
       };
       setLoading(true);
       const newData = await axios.post(
-        "http://13.127.219.251/api/v1/multipleimage/upload",
+        "http://13.127.219.251/backend/backend/api/v1/multipleimage/upload",
         formData,
         config
       );
@@ -318,7 +318,7 @@ const Project = ({}) => {
       };
       setLoading(true);
       const newData = await axios.post(
-        "http://13.127.219.251/api/v1/multipleimage/upload",
+        "http://13.127.219.251/backend/backend/api/v1/multipleimage/upload",
         formData,
         config
       );
